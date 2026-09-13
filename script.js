@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAhsV-ukcTQJsHNww1mme34kz5qfaE2Hxk",
@@ -12,6 +13,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 // Твой массив players пока остается здесь, мы объединим его с базой на следующем шаге!
 
@@ -643,6 +645,43 @@ document.getElementById('admin-delete-btn').onclick = async () => {
       alert('❌ Произошла ошибка. Карточка не удалена.');
     }
   }
+};
+
+// --- ЛОГИКА АВТОРИЗАЦИИ АДМИНА ---
+
+// 1. Слушаем, вошел ли админ в систему (Firebase сам это запоминает!)
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // Пользователь вошел! Показываем панель создания карточек
+    document.getElementById('admin-login-section').style.display = 'none';
+    document.getElementById('admin-dashboard-section').style.display = 'flex';
+  } else {
+    // Пользователь НЕ вошел! Прячем панель, требуем логин
+    document.getElementById('admin-login-section').style.display = 'flex';
+    document.getElementById('admin-dashboard-section').style.display = 'none';
+  }
+});
+
+// 2. Кнопка "Войти"
+document.getElementById('admin-login-btn').onclick = async () => {
+  const email = document.getElementById('admin-email').value;
+  const pass = document.getElementById('admin-password').value;
+  
+  if(!email || !pass) return alert('Введи почту и пароль!');
+
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+    alert('✅ Успешный вход! Права администратора получены.');
+  } catch (error) {
+    console.error("Ошибка входа:", error);
+    alert('❌ Неверный логин или пароль!');
+  }
+};
+
+// 3. Кнопка "Выйти"
+document.getElementById('admin-logout-btn').onclick = async () => {
+  await signOut(auth);
+  alert('🚪 Вы вышли из аккаунта.');
 };
 
 updateUI();
