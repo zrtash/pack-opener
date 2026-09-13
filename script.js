@@ -1,4 +1,3 @@
-// Надежная база фоток с SoFifa
 const players = [
   { id: 'pele', name: 'Pele (ICON)', raiting: 99, club: 'Icons', league: 'Icon', pos: 'ST', price: 5000, photo: './pele.png' },
   { id: 'mbappe', name: 'K. Mbappe', raiting: 91, club: 'Real Madrid', league: 'La Liga', pos: 'ST', price: 300, photo: 'https://images.fotmob.com/image_resources/playerimages/701154.png' },
@@ -19,37 +18,29 @@ const players = [
   { id: 'tchouameni', name: 'A. Tchouameni', raiting: 84, club: 'Real Madrid', league: 'La Liga', pos: 'CDM', price: 600, photo: './tchouameni.png' }
 ];
 
-
 // Умное сокращение имен для поля
 function getShortName(fullName) {
-  if (fullName.includes('.')) return fullName.split('. ')[1]; // K. Mbappe -> Mbappe
-  if (fullName.includes('(')) return fullName.split(' ')[0];  // Pele (ICON) -> Pele
-  return fullName; // Vinicius JR -> Vinicius JR
+  if (fullName.includes('.')) return fullName.split('. ')[1]; 
+  if (fullName.includes('(')) return fullName.split(' ')[0];  
+  return fullName; 
 }
 
 const packTypes = {
   standard: { 
     cost: 150, 
     weights: { 
-      // Частые (Гюлера и Уокера разбавили Камавингой и Тчуамени)
       guler: 30, walker: 25, camavinga: 25, tchouameni: 23, 
-      // Средние
       rodrygo: 22, modric: 15, rudiger: 12, yamal: 10, 
-      // Редкие
       courtois: 5, foden: 9, valverde: 4, 
-      // Супер-редкие
       salah: 2, vini: 1, mbappe: 0.5, haaland: 0.5, bellingham: 0.5 
     } 
   },
   elite: { 
     cost: 400, 
     weights: { 
-      // В элитном паке Гюлер и Уокер больше не падают вообще (0)!
       guler: 0, walker: 0, camavinga: 5, tchouameni: 5, 
-      // Чаще падают средние и хорошие карточки
       rodrygo: 20, modric: 20, rudiger: 20, yamal: 20, 
       courtois: 15, foden: 10, valverde: 10, 
-      // Шанс на топ-игроков сильно повышен
       salah: 8, vini: 6, mbappe: 4, haaland: 4, bellingham: 4 
     } 
   }
@@ -62,7 +53,6 @@ const questDefinitions = [
   { id: 'stars_90', title: 'Суперзвезда', desc: 'Игрок с рейтингом 90+', target: 1, type: 'stars', reward: 250 }
 ];
 
-// Память
 let coins = parseInt(localStorage.getItem('cards_coins')) || 1000;
 let totalOpened = parseInt(localStorage.getItem('cards_totalOpened')) || 0;
 let inventory = JSON.parse(localStorage.getItem('cards_inventory')) || {};
@@ -93,7 +83,6 @@ function updateUI() {
   document.getElementById('collection-total').textContent = players.length;
 }
 
-// Банкротство
 function checkBankruptcy() {
   const minCost = 150;
   const totalCardsValue = players.reduce((sum, p) => sum + (inventory[p.id]?.count || 0) * p.price, 0);
@@ -103,7 +92,6 @@ function checkBankruptcy() {
   }
 }
 
-// === МЕНЮ: КОЛЛЕКЦИЯ ===
 function initSlots() {
   const grid = document.getElementById('collection-grid');
   grid.innerHTML = '';
@@ -160,7 +148,6 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   });
 });
 
-// === МЕНЮ: ЗАДАНИЯ ===
 function renderQuests() {
   const list = document.getElementById('quests-list');
   list.innerHTML = '';
@@ -194,7 +181,6 @@ window.claimQuest = function(id, reward) {
   saveState(); updateUI(); renderQuests();
 };
 
-// === МЕНЮ: ТОП ЛИДЕРОВ ===
 function renderLeaderboard() {
   const list = document.getElementById('leaderboard-list');
   list.innerHTML = '';
@@ -203,7 +189,6 @@ function renderLeaderboard() {
   });
 }
 
-// === МЕНЮ: СОСТАВ ===
 function renderSquad() {
   let totalRating = 0, count = 0;
   Object.keys(squad).forEach(pos => {
@@ -216,7 +201,6 @@ function renderSquad() {
 
     if (p) {
       slotEl.classList.add('occupied');
-      // ИСПОЛЬЗУЕМ getShortName ВМЕСТО split
       slotEl.innerHTML = `<div style="font-size:8px;">${pos}</div><div>${getShortName(p.name)}</div><div>${p.raiting}</div><button class="slot-remove-btn" onclick="event.stopPropagation(); squad['${pos}']=null; saveState(); renderSquad(); renderSquadPicker();">✕</button>`;
       totalRating += p.raiting; count++;
     } else {
@@ -242,7 +226,6 @@ function renderSquadPicker() {
   avail.forEach(p => {
     const div = document.createElement('div');
     div.className = 'squad-picker-card';
-    // ИСПОЛЬЗУЕМ getShortName
     div.innerHTML = `<b>${getShortName(p.name)}</b> (${p.raiting})<br><small>${p.pos}</small>`;
     div.onclick = () => {
       if(!selectedPitchPos) return alert('Сначала нажми на позицию на поле!');
@@ -255,7 +238,6 @@ function renderSquadPicker() {
   });
 }
 
-// === МЕНЮ: РЫНОК ===
 function renderMarket() {
   const grid = document.getElementById('market-grid');
   grid.innerHTML = '';
@@ -264,7 +246,6 @@ function renderMarket() {
     const div = document.createElement('div');
     div.className = `mini-card ${p.raiting >= 90 ? 'card-gold' : p.raiting >= 85 ? 'card-silver' : 'card-bronze'}`;
     
-    // Добавили кнопке уникальный ID и атрибут disabled
     div.innerHTML = `
       <span class="mini-card-rating">${p.raiting}</span>
       <img class="mini-card-photo" src="${p.photo}">
@@ -285,8 +266,6 @@ window.buyMarket = function(id, cost) {
   saveState(); 
   updateUI(); 
   
-  // ВМЕСТО ПОЛНОЙ ПЕРЕРИСОВКИ РЫНКА (из-за чего моргали фото):
-  // Мы просто пробегаемся по кнопкам и выключаем те, на которые больше нет денег
   players.filter(p => p.id !== 'pele').forEach(p => {
     const btn = document.getElementById(`buy-btn-${p.id}`);
     if (btn) {
@@ -295,7 +274,6 @@ window.buyMarket = function(id, cost) {
   });
 };
 
-// === МЕНЮ: СБОРКИ (ИПК) ===
 function renderSBC() {
   const container = document.getElementById('sbc-slots');
   container.innerHTML = '';
@@ -306,7 +284,6 @@ function renderSBC() {
     if (pId) {
       const p = players.find(x => x.id === pId);
       slot.classList.add('filled');
-      // Вот здесь я сделал большую фотку и крупный жирный рейтинг для ИПК!
       slot.innerHTML = `
         <img src="${p.photo}" style="width: 55px; height: 55px; object-fit: contain; margin-bottom: 5px;">
         <div style="font-size: 18px; font-weight: 900; color: #fff;">${p.raiting}</div>
@@ -327,7 +304,6 @@ function renderSBCPicker() {
   avail.forEach(p => {
     const div = document.createElement('div');
     div.className = 'squad-picker-card';
-    // ИСПОЛЬЗУЕМ getShortName
     div.innerHTML = `<b>${getShortName(p.name)}</b> (${p.raiting})`;
     div.onclick = () => {
       if(sbcBurnList.length < 3) { sbcBurnList.push(p.id); renderSBC(); renderSBCPicker(); }
@@ -342,24 +318,16 @@ document.getElementById('sbc-submit-btn').onclick = () => {
   document.getElementById('sbc-modal').style.display = 'none';
   saveState(); updateUI();
   
-  // Шанс 10% на легенду Пеле
   const isPele = Math.random() < 0.10;
   const reward = isPele ? players.find(p=>p.id==='pele') : players.find(p=>p.id==='mbappe');
   revealCard(reward, true);
 };
 
-// === БАНК ===
-// === БАНК (Донат временно отключен) ===
 window.buyCoins = function(amount, priceStr) {
   alert('Эта функция пока в разработке! Пополнение баланса появится в будущих обновлениях.');
-  
-  // Убрали начисление монет (coins += amount), чтобы игроки не читерили
-  
-  // Просто закрываем модальное окно
   document.getElementById('bank-modal').style.display = 'none';
 };
 
-// === ОТКРЫТИЕ ПАКОВ ===
 const btn = document.getElementById('btn');
 const pack = document.getElementById('pack');
 const card = document.getElementById('card');
@@ -431,7 +399,6 @@ sellBtn.onclick = () => {
   checkBankruptcy();
 };
 
-// === ОТКРЫТИЕ ВСЕХ ОКНА ===
 document.getElementById('open-collection-btn').onclick = () => { initSlots(); document.getElementById('collection-modal').style.display = 'flex'; };
 document.getElementById('open-quests-btn').onclick = () => { renderQuests(); document.getElementById('quests-modal').style.display = 'flex'; };
 document.getElementById('open-leaderboard-btn').onclick = () => { renderLeaderboard(); document.getElementById('leaderboard-modal').style.display = 'flex'; };
@@ -444,48 +411,39 @@ document.querySelectorAll('[data-close]').forEach(btn => {
   btn.onclick = () => document.getElementById(btn.dataset.close).style.display = 'none';
 });
 
-// Сохранение рекорда при банкротстве
 document.getElementById('save-score-btn').onclick = () => {
   leaderboard.push({ name: document.getElementById('player-nickname').value || 'Игрок', score: totalOpened });
   leaderboard.sort((a,b)=>b.score-a.score);
   localStorage.setItem('cards_leaderboard', JSON.stringify(leaderboard.slice(0,10)));
   
   localStorage.clear(); 
-  location.reload(); // Жесткий рестарт страницы для новой игры
+  location.reload(); 
 };
 
-// === КНОПКА СБРОСА ПРОГРЕССА (РЕСТАРТ) ===
 const resetModal = document.getElementById('reset-modal');
 
-// Открываем кастомное окно при нажатии на ↺
 document.getElementById('reset-btn').onclick = () => {
   resetModal.style.display = 'flex';
 };
 
-// Кнопка "Отмена"
 document.getElementById('cancel-reset-btn').onclick = () => {
   resetModal.style.display = 'none';
 };
 
-// Закрытие окна при клике на черный фон
 resetModal.onclick = (e) => {
   if (e.target === resetModal) resetModal.style.display = 'none';
 };
 
-// Кнопка красная "Сбросить"
 document.getElementById('confirm-reset-btn').onclick = () => {
-  // Удаляем прогресс, не трогая таблицу рекордов
   localStorage.removeItem('cards_coins');
   localStorage.removeItem('cards_totalOpened');
   localStorage.removeItem('cards_inventory');
   localStorage.removeItem('cards_squad');
   localStorage.removeItem('cards_completed_quests');
   
-  // Перезагружаем страницу
   location.reload();
 };
 
-// === СЕКРЕТНАЯ АДМИНКА (ПРОМОКОДЫ) ===
 let secretPackClicks = 0;
 const packIconEl = document.getElementById('pack');
 
@@ -502,10 +460,10 @@ packIconEl.addEventListener('click', () => {
       if (!inventory['pele']) inventory['pele'] = { count: 0 };
       inventory['pele'].count++;
       alert('👑 Чит-код принят: Эксклюзивный Пеле (99) добавлен в коллекцию!');
-    } else if (cheatCode === 'all') { // <--- ВОТ НОВЫЙ ЧИТ-КОД
+    } else if (cheatCode === 'all') { 
       players.forEach(p => {
         if (!inventory[p.id]) inventory[p.id] = { count: 0 };
-        inventory[p.id].count++; // Выдаем по одной копии каждого игрока
+        inventory[p.id].count++; 
       });
       alert('🔓 Чит-код принят: Все карточки разблокированы!');
     } else if (cheatCode !== null) {
