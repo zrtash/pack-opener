@@ -457,7 +457,7 @@ document.getElementById('confirm-reset-btn').onclick = () => {
 
 // === СЕКРЕТНАЯ АДМИНКА (ПРОМОКОДЫ) ===
 let secretPackClicks = 0;
-const packIconEl = document.getElementById('pack-icon');
+const packIconEl = document.getElementById('pack');
 
 packIconEl.addEventListener('click', () => {
   secretPackClicks++;
