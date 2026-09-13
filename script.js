@@ -10,7 +10,14 @@ const players = [
   { id: 'guler', name: 'A. Guler', raiting: 78, club: 'Real Madrid', league: 'La Liga', pos: 'CM', price: 50, photo: 'https://images.fotmob.com/image_resources/playerimages/1253890.png' },
   { id: 'courtois', name: 'T. Courtois', raiting: 90, club: 'Real Madrid', league: 'La Liga', pos: 'GK', price: 150, photo: 'https://images.fotmob.com/image_resources/playerimages/170323.png' },
   { id: 'rudiger', name: 'A. Rudiger', raiting: 88, club: 'Real Madrid', league: 'La Liga', pos: 'CB', price: 120, photo: 'https://images.fotmob.com/image_resources/playerimages/276738.png' },
-  { id: 'walker', name: 'K. Walker', raiting: 84, club: 'Burnley', league: 'Premier League', pos: 'RB', price: 70, photo: './walker.png' }
+  { id: 'walker', name: 'K. Walker', raiting: 84, club: 'Burnley', league: 'Premier League', pos: 'RB', price: 70, photo: './walker.png' },
+  { id: 'bellingham', name: 'J. Bellingham', raiting: 90, club: 'Real Madrid', league: 'La Liga', pos: 'CAM', price: 2000, photo: './bellingham.png' },
+  { id: 'valverde', name: 'F. Valverde', raiting: 88, club: 'Real Madrid', league: 'La Liga', pos: 'CM', price: 1200, photo: './valverde.png' },
+  { id: 'rodrygo', name: 'Rodrygo', raiting: 85, club: 'Real Madrid', league: 'La Liga', pos: 'RW', price: 800, photo: './rodrygo.png' },
+  { id: 'modric', name: 'L. Modric', raiting: 87, club: 'Milan', league: 'Seria A', pos: 'CM', price: 1000, photo: './modric.png' },
+  { id: 'camavinga', name: 'E. Camavinga', raiting: 82, club: 'Real Madrid', league: 'La Liga', pos: 'CDM', price: 500, photo: './camavinga.png' },
+  { id: 'tchouameni', name: 'A. Tchouameni', raiting: 84, club: 'Real Madrid', league: 'La Liga', pos: 'CDM', price: 600, photo: './tchouameni.png' }
+];
 ];
 
 // Умное сокращение имен для поля
@@ -21,8 +28,31 @@ function getShortName(fullName) {
 }
 
 const packTypes = {
-  standard: { cost: 150, weights: { guler: 40, walker: 30, rudiger: 15, yamal: 10, courtois: 5, foden: 4, salah: 2, vini: 1, mbappe: 0.5, haaland: 0.5 } },
-  elite: { cost: 400, weights: { guler: 10, walker: 15, rudiger: 20, yamal: 25, courtois: 15, foden: 10, salah: 8, vini: 6, mbappe: 4, haaland: 4 } }
+  standard: { 
+    cost: 150, 
+    weights: { 
+      // Частые (Гюлера и Уокера разбавили Камавингой и Тчуамени)
+      guler: 30, walker: 25, camavinga: 25, tchouameni: 23, 
+      // Средние
+      rodrygo: 22, modric: 15, rudiger: 12, yamal: 10, 
+      // Редкие
+      courtois: 5, foden: 9, valverde: 4, 
+      // Супер-редкие
+      salah: 2, vini: 1, mbappe: 0.5, haaland: 0.5, bellingham: 0.5 
+    } 
+  },
+  elite: { 
+    cost: 400, 
+    weights: { 
+      // В элитном паке Гюлер и Уокер больше не падают вообще (0)!
+      guler: 0, walker: 0, camavinga: 5, tchouameni: 5, 
+      // Чаще падают средние и хорошие карточки
+      rodrygo: 20, modric: 20, rudiger: 20, yamal: 20, 
+      courtois: 15, foden: 10, valverde: 10, 
+      // Шанс на топ-игроков сильно повышен
+      salah: 8, vini: 6, mbappe: 4, haaland: 4, bellingham: 4 
+    } 
+  }
 };
 
 const questDefinitions = [
