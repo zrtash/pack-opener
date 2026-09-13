@@ -1,3 +1,20 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAhsV-ukcTQJsHNww1mme34kz5qfaE2Hxk",
+  authDomain: "football-cards-game-21af2.firebaseapp.com",
+  projectId: "football-cards-game-21af2",
+  storageBucket: "football-cards-game-21af2.firebasestorage.app",
+  messagingSenderId: "244547134478",
+  appId: "1:244547134478:web:c078e6933845eb011b485f"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Твой массив players пока остается здесь, мы объединим его с базой на следующем шаге!
+
 const players = [
   { id: 'maradona', name: 'Maradona (ICON)', raiting: 100, club: 'Icons', league: 'Icon', pos: 'CAM', price: 3000, photo: 'https://images.fotmob.com/image_resources/playerimages/158546.png' },
   { id: 'pele', name: 'Pele (ICON)', raiting: 100, club: 'Icons', league: 'Icon', pos: 'ST', price: 3000, photo: './pele.png' },
@@ -520,5 +537,48 @@ packIconEl.addEventListener('click', () => {
   
   setTimeout(() => secretPackClicks = 0, 2000); 
 });
+
+// Открытие админки (например, по двойному клику на счетчик монет)
+document.getElementById('coins-count').addEventListener('dblclick', () => {
+  document.getElementById('admin-modal').style.display = 'flex';
+});
+
+// Отправка новой карточки в Firebase
+document.getElementById('admin-submit-btn').onclick = async () => {
+  const name = document.getElementById('admin-name').value;
+  const raiting = parseInt(document.getElementById('admin-raiting').value);
+  const club = document.getElementById('admin-club').value;
+  const league = document.getElementById('admin-league').value;
+  const pos = document.getElementById('admin-pos').value;
+  const price = parseInt(document.getElementById('admin-price').value);
+  const photo = document.getElementById('admin-photo').value;
+
+  if (!name || !raiting || !photo) {
+    return alert('Заполни как минимум Имя, Рейтинг и Фото!');
+  }
+
+  // Генерируем ID игрока (например из "L. Messi" получится "lmessi")
+  const id = name.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+  try {
+    // Импортируем функцию добавления (если она еще не импортирована)
+    const { collection, setDoc, doc } = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
+    
+    // Сохраняем в коллекцию "players"
+    await setDoc(doc(db, "players", id), {
+      id, name, raiting, club, league, pos, price, photo
+    });
+    
+    alert('✅ Карточка успешно отправлена в общую базу данных!');
+    document.getElementById('admin-modal').style.display = 'none';
+    
+    // Очищаем форму
+    document.querySelectorAll('#admin-modal input').forEach(input => input.value = '');
+    
+  } catch (error) {
+    console.error("Ошибка:", error);
+    alert('❌ Произошла ошибка. Проверь консоль браузера.');
+  }
+};
 
 updateUI();
