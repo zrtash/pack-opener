@@ -18,7 +18,7 @@ const players = [
   { id: 'camavinga', name: 'E. Camavinga', raiting: 82, club: 'Real Madrid', league: 'La Liga', pos: 'CDM', price: 500, photo: './camavinga.png' },
   { id: 'tchouameni', name: 'A. Tchouameni', raiting: 84, club: 'Real Madrid', league: 'La Liga', pos: 'CDM', price: 600, photo: './tchouameni.png' }
 ];
-];
+
 
 // Умное сокращение имен для поля
 function getShortName(fullName) {
