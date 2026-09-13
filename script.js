@@ -68,6 +68,40 @@ const packTypes = {
   }
 };
 
+// Функция загрузки игроков из облака Firebase
+async function loadPlayersFromDB() {
+  try {
+    // Скачиваем всю папку "players" из базы
+    const querySnapshot = await getDocs(collection(db, "players"));
+    
+    querySnapshot.forEach((doc) => {
+      const customPlayer = doc.data();
+      
+      // Проверяем, нет ли уже такого игрока, чтобы не было дубликатов
+      if (!players.find(p => p.id === customPlayer.id)) {
+        players.push(customPlayer); // Добавляем в общий список игры
+        
+        // Добавляем шанс выпадения новой карточки в паках (по умолчанию)
+        packTypes.standard.weights[customPlayer.id] = 5; // Шанс в обычном паке
+        packTypes.elite.weights[customPlayer.id] = 5;    // Шанс в элитном паке
+      }
+    });
+
+    console.log("✅ Игроки из базы успешно загружены!");
+    
+    // Обновляем интерфейс, чтобы новые игроки появились на рынке и в коллекции
+    updateUI();
+    if (document.getElementById('market-modal').style.display === 'flex') renderMarket();
+    if (document.getElementById('collection-modal').style.display === 'flex') initSlots();
+    
+  } catch (error) {
+    console.error("❌ Ошибка при загрузке игроков из базы:", error);
+  }
+}
+
+// Запускаем скачивание при старте игры
+loadPlayersFromDB();
+
 const questDefinitions = [
   { id: 'open_3', title: 'Новичок', desc: 'Открой 3 пака', target: 3, type: 'packs', reward: 150 },
   { id: 'open_10', title: 'Опытный кейсер', desc: 'Открой 10 паков', target: 10, type: 'packs', reward: 350 },
