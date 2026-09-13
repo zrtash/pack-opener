@@ -309,27 +309,41 @@
       </div>
     </div>
 
-    <!-- Секретная Админ-панель -->
+<!-- Секретная Админ-панель -->
 <div id="admin-modal" class="modal" style="display: none; background: rgba(0,0,0,0.9); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; justify-content: center; align-items: center;">
   <div style="background: #1e293b; padding: 20px; border-radius: 10px; width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 10px;">
-    <h2 style="color: white; margin-bottom: 10px; text-align: center;">Создать Карточку</h2>
     
-    <input type="text" id="admin-name" placeholder="Имя (например, L. Messi)" style="padding: 10px; border-radius: 5px;">
-    <input type="number" id="admin-raiting" placeholder="Рейтинг (например, 94)" style="padding: 10px; border-radius: 5px;">
-    <input type="text" id="admin-club" placeholder="Клуб (например, Inter Miami)" style="padding: 10px; border-radius: 5px;">
-    <input type="text" id="admin-league" placeholder="Лига (например, MLS)" style="padding: 10px; border-radius: 5px;">
-    <input type="text" id="admin-pos" placeholder="Позиция (например, RW)" style="padding: 10px; border-radius: 5px;">
-    <input type="number" id="admin-price" placeholder="Цена продажи (например, 500)" style="padding: 10px; border-radius: 5px;">
-    <input type="text" id="admin-photo" placeholder="Ссылка на фото (URL)" style="padding: 10px; border-radius: 5px;">
-    
-    <button id="admin-submit-btn" style="padding: 10px; background: #34d399; color: black; font-weight: bold; border: none; border-radius: 5px; margin-top: 10px;">Отправить в базу</button>
-    <!-- НОВЫЙ БЛОК УДАЛЕНИЯ -->
-    <hr style="border: 1px solid #334155; margin: 15px 0; width: 100%;">
-    <h3 style="color: #ef4444; margin-bottom: 5px; text-align: center;">Удалить карточку</h3>
-    <input type="text" id="admin-delete-name" placeholder="Введи Имя (как при создании)" style="padding: 10px; border-radius: 5px;">
-    <button id="admin-delete-btn" style="padding: 10px; background: #ef4444; color: white; font-weight: bold; border: none; border-radius: 5px; margin-top: 5px; margin-bottom: 10px;">Удалить навсегда</button>
-    <!-- КОНЕЦ БЛОКА УДАЛЕНИЯ -->
-    <button onclick="document.getElementById('admin-modal').style.display='none'" style="padding: 10px; background: #ef4444; color: white; border: none; border-radius: 5px;">Закрыть</button>
+    <!-- БЛОК ВХОДА (ЛОГИН) -->
+    <div id="admin-login-section" style="display: flex; flex-direction: column; gap: 10px;">
+      <h2 style="color: white; margin-bottom: 10px; text-align: center;">Вход в систему</h2>
+      <input type="email" id="admin-email" placeholder="Email от Firebase" style="padding: 10px; border-radius: 5px;">
+      <input type="password" id="admin-password" placeholder="Пароль" style="padding: 10px; border-radius: 5px;">
+      <button id="admin-login-btn" style="padding: 10px; background: #38bdf8; color: black; font-weight: bold; border: none; border-radius: 5px;">Войти</button>
+    </div>
+
+    <!-- БЛОК УПРАВЛЕНИЯ КАРТОЧКАМИ (Скрыт до входа) -->
+    <div id="admin-dashboard-section" style="display: none; flex-direction: column; gap: 10px;">
+      <h2 style="color: white; margin-bottom: 10px; text-align: center;">Создать Карточку</h2>
+      <input type="text" id="admin-name" placeholder="Имя (например, L. Messi)" style="padding: 10px; border-radius: 5px;">
+      <input type="number" id="admin-raiting" placeholder="Рейтинг (например, 94)" style="padding: 10px; border-radius: 5px;">
+      <input type="text" id="admin-club" placeholder="Клуб (например, Inter Miami)" style="padding: 10px; border-radius: 5px;">
+      <input type="text" id="admin-league" placeholder="Лига (например, MLS)" style="padding: 10px; border-radius: 5px;">
+      <input type="text" id="admin-pos" placeholder="Позиция (например, RW)" style="padding: 10px; border-radius: 5px;">
+      <input type="number" id="admin-price" placeholder="Цена продажи (например, 500)" style="padding: 10px; border-radius: 5px;">
+      <input type="text" id="admin-photo" placeholder="Ссылка на фото (URL)" style="padding: 10px; border-radius: 5px;">
+      
+      <button id="admin-submit-btn" style="padding: 10px; background: #34d399; color: black; font-weight: bold; border: none; border-radius: 5px; margin-top: 10px;">Отправить в базу</button>
+      
+      <hr style="border: 1px solid #334155; margin: 15px 0; width: 100%;">
+      <h3 style="color: #ef4444; margin-bottom: 5px; text-align: center;">Удалить карточку</h3>
+      <input type="text" id="admin-delete-name" placeholder="Введи Имя (как при создании)" style="padding: 10px; border-radius: 5px;">
+      <button id="admin-delete-btn" style="padding: 10px; background: #ef4444; color: white; font-weight: bold; border: none; border-radius: 5px;">Удалить навсегда</button>
+      
+      <button id="admin-logout-btn" style="padding: 10px; background: transparent; color: #94a3b8; border: 1px solid #94a3b8; border-radius: 5px; margin-top: 10px;">Выйти из аккаунта</button>
+    </div>
+
+    <!-- Общая кнопка закрытия -->
+    <button onclick="document.getElementById('admin-modal').style.display='none'" style="padding: 10px; background: #64748b; color: white; border: none; border-radius: 5px; margin-top: 5px;">Закрыть панель</button>
   </div>
 </div>
     
