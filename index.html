@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="Icon" href="./Gemini_Generated_Image_ibmgmlibmgmlibmg__1_-removebg-preview.png">
+    <title>FootBallersCard</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="confetti-canvas"></canvas>
+    <div id="walkout-overlay" class="walkout-overlay">
+      <div class="walkout-text">🔥 WALKOUT 🔥</div>
+    </div>
+
+    <div class="main-container">
+      <div class="top-bar">
+        <div
+          class="coins-badge"
+          id="open-bank-btn"
+          style="cursor: pointer"
+          title="Купить монеты"
+        >
+          💵 <span id="coins-count">1000</span>$
+          <span style="color: #10b981; font-size: 16px">+</span>
+        </div>
+        <div class="counter">
+          Паков: <span id="pack-count">0</span>
+          <button id="reset-btn" class="reset-btn" title="Сбросить всё">
+            ↺
+          </button>
+        </div>
+      </div>
+
+      <div class="pack-selector">
+        <button class="pack-tab active" data-pack="standard">
+          Обычный (150$)
+        </button>
+        <button class="pack-tab" data-pack="elite">Элитный (400$)</button>
+      </div>
+
+      <div class="stage">
+        <div id="pack" class="pack-box">
+          <div id="pack-icon" class="pack-icon">📦</div>
+          <div id="pack-name" class="pack-label">Обычный пак</div>
+        </div>
+        <div id="card" class="card"></div>
+      </div>
+
+      <div class="action-buttons">
+        <button id="btn" class="btn">Открыть (150$)</button>
+        <button id="sell-btn" class="btn btn-sell" style="display: none">
+          Продать
+        </button>
+      </div>
+
+      <div class="nav-buttons">
+        <button id="open-collection-btn" class="btn btn-secondary">
+          Коллекция (<span id="collection-count">0</span>/<span
+            id="collection-total"
+            >0</span
+          >)
+        </button>
+        <button id="open-squad-btn" class="btn btn-secondary">Состав ⚽</button>
+        <button id="open-quests-btn" class="btn btn-secondary">
+          Задания 🎯
+        </button>
+      </div>
+      <div class="nav-buttons" style="margin-top: 8px;">
+        <button id="open-market-btn" class="btn btn-secondary" style="background:#f59e0b; color:#111827;">Рынок 🛒</button>
+        <button id="open-sbc-btn" class="btn btn-secondary" style="background:#8b5cf6; color:#fff;">Сборки (ИПК) ♻️</button>
+        <button id="open-leaderboard-btn" class="btn btn-secondary">Топ 🏆</button>
+      </div>
+
+      <!-- ВСТАВЛЯЙ КОД ТЕЛЕГРАМА ВОТ СЮДА -->
+      <a href="https://t.me/fbc_openCards" target="_blank" class="tg-link-btn">
+        💬 Наш Telegram (Отзывы и Обновы)
+      </a>
+
+    </div> <!-- Это конец main-container, дальше идут модалки -->
+    </div>
+
+    <!-- Модалки (Скрытые) -->
+    <!-- Коллекция -->
+    <div id="collection-modal" class="modal-overlay">
+      <div class="modal-window modal-wide">
+        <div class="modal-header">
+          <h3>Коллекция</h3>
+          <button class="close-btn" data-close="collection-modal">
+            &times;
+          </button>
+        </div>
+        <div class="filters-bar">
+          <button class="filter-btn active" data-filter="all">Все</button
+          ><button class="filter-btn" data-filter="La Liga">La Liga</button
+          ><button class="filter-btn" data-filter="Premier League">
+            Premier League</button
+          ><button class="filter-btn" data-filter="Icon">Иконы</button>
+        </div>
+        <div id="collection-grid" class="modal-grid"></div>
+      </div>
+    </div>
+
+    <!-- Задания -->
+    <div id="quests-modal" class="modal-overlay">
+      <div class="modal-window">
+        <div class="modal-header">
+          <h3>Задания и награды</h3>
+          <button class="close-btn" data-close="quests-modal">&times;</button>
+        </div>
+        <div id="quests-list" class="quests-list"></div>
+      </div>
+    </div>
+
+    <!-- Состав (11 игроков) -->
+    <div id="squad-modal" class="modal-overlay">
+      <div class="modal-window modal-wide">
+        <div class="modal-header">
+          <div class="squad-header-info">
+            <h3>Состав (4-3-3)</h3>
+            <span class="squad-rating-badge"
+              >Рейтинг: <b id="squad-ovr">0</b></span
+            >
+          </div>
+          <button class="close-btn" data-close="squad-modal">&times;</button>
+        </div>
+        <div class="pitch">
+          <div class="pitch-line center-line"></div>
+          <div class="pitch-circle"></div>
+          <div class="pitch-penalty-box top"></div>
+          <div class="pitch-penalty-box bottom"></div>
+          <div class="pitch-formation">
+            <div class="pitch-row">
+              <div class="pitch-slot" id="slot-LW">LW</div>
+              <div class="pitch-slot" id="slot-ST">ST</div>
+              <div class="pitch-slot" id="slot-RW">RW</div>
+            </div>
+            <div class="pitch-row">
+              <div class="pitch-slot" id="slot-LCM">CM</div>
+              <div class="pitch-slot" id="slot-CM">CM</div>
+              <div class="pitch-slot" id="slot-RCM">CM</div>
+            </div>
+            <div class="pitch-row">
+              <div class="pitch-slot" id="slot-LB">LB</div>
+              <div class="pitch-slot" id="slot-LCB">CB</div>
+              <div class="pitch-slot" id="slot-RCB">CB</div>
+              <div class="pitch-slot" id="slot-RB">RB</div>
+            </div>
+            <div class="pitch-row">
+              <div class="pitch-slot" id="slot-GK">GK</div>
+            </div>
+          </div>
+        </div>
+        <div class="squad-controls-hint">
+          <span id="selected-pos-label">Нажми на позицию на поле</span>
+        </div>
+        <div id="squad-inventory" class="squad-picker-grid"></div>
+      </div>
+    </div>
+
+    <!-- Рынок -->
+    <div id="market-modal" class="modal-overlay">
+      <div class="modal-window modal-wide">
+        <div class="modal-header">
+          <h3>Трансферный рынок</h3>
+          <button class="close-btn" data-close="market-modal">&times;</button>
+        </div>
+        <div id="market-grid" class="modal-grid"></div>
+      </div>
+    </div>
+
+    <!-- Сборки (SBC) -->
+    <div id="sbc-modal" class="modal-overlay">
+      <div class="modal-window">
+        <div class="modal-header">
+          <h3>Сборка (ИПК)</h3>
+          <button class="close-btn" data-close="sbc-modal">&times;</button>
+        </div>
+        <p style="font-size: 12px; color: #94a3b8">
+          Сдай 3 любых игроков, чтобы получить эксклюзивный Пак Иконы (Шанс на
+          Пеле 99!)
+        </p>
+        <div id="sbc-slots" class="sbc-slots-container"></div>
+        <button
+          id="sbc-submit-btn"
+          class="btn"
+          style="width: 100%; margin-top: 10px"
+          disabled
+        >
+          Собрать пак
+        </button>
+        <div
+          id="sbc-inventory"
+          class="squad-picker-grid"
+          style="margin-top: 15px"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Банк (Донат) -->
+    <div id="bank-modal" class="modal-overlay">
+      <div class="modal-window">
+        <div class="modal-header">
+          <h3>Банк (Купить $)</h3>
+          <button class="close-btn" data-close="bank-modal">&times;</button>
+        </div>
+        <div class="bank-options">
+          <button class="bank-btn" onclick="buyCoins(5000, '0.99$')">
+            💰 5,000$ за 0.99$</button
+          ><button class="bank-btn" onclick="buyCoins(25000, '2.99$')">
+            💎 25,000$ за 2.99$
+          </button>
+        </div>
+        <p style="font-size: 10px; color: #64748b; margin-top: 10px">
+          В данный момент оплата тестируется.
+        </p>
+      </div>
+    </div>
+
+    <!-- Окно подтверждения сброса -->
+    <div id="reset-modal" class="modal-overlay">
+      <div class="modal-window" style="max-width: 320px; text-align: center">
+        <h2 style="color: #ef4444; margin-top: 0">⚠️ ВНИМАНИЕ!</h2>
+        <p style="font-size: 14px; margin-bottom: 15px">
+          Ты точно хочешь обнулить баланс, состав и удалить всю коллекцию?
+        </p>
+        <p style="font-size: 12px; color: #94a3b8; margin-bottom: 20px">
+          Твои рекорды в таблице лидеров сохранятся.
+        </p>
+        <div style="display: flex; gap: 10px; justify-content: center">
+          <button
+            id="cancel-reset-btn"
+            class="btn btn-secondary"
+            style="flex: 1"
+          >
+            Отмена
+          </button>
+          <button
+            id="confirm-reset-btn"
+            class="btn"
+            style="
+              flex: 1;
+              background: #ef4444;
+              color: #fff;
+              border-color: #ef4444;
+            "
+          >
+            Сбросить
+          </button>
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- Банкрот и Топ -->
+    <div id="gameover-modal" class="modal-overlay">
+      <div class="modal-window">
+        <h2 style="color: #ef4444">💸 ВЫ БАНКРОТ!</h2>
+        <p>
+          Паков открыто:
+          <b id="final-pack-score" style="color: #f59e0b; font-size: 20px">0</b>
+        </p>
+        <input
+          type="text"
+          id="player-nickname"
+          placeholder="Твой ник"
+          maxlength="12"
+          style="
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            background: #0f172a;
+            color: #fff;
+            width: 80%;
+            margin-bottom: 12px;
+            text-align: center;
+          "
+        /><br /><button id="save-score-btn" class="btn">
+          Сохранить и начать заново
+        </button>
+      </div>
+    </div>
+    <div id="leaderboard-modal" class="modal-overlay">
+      <div class="modal-window">
+        <div class="modal-header">
+          <h3>🏆 Топ игроков</h3>
+          <button class="close-btn" data-close="leaderboard-modal">
+            &times;
+          </button>
+        </div>
+        <div id="leaderboard-list" class="leaderboard-list"></div>
+      </div>
+    </div>
+    
+
+    <script src="script.js"></script>
+  </body>
+</html>
