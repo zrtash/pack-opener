@@ -239,7 +239,7 @@ function renderMarket() {
       <span class="mini-card-rating">${p.raiting}</span>
       <img class="mini-card-photo" src="${p.photo}">
       <span class="mini-card-name">${p.name}</span>
-      <button id="buy-btn-${p.id}" class="market-buy-btn" ${coins < cost ? 'disabled' : ''} onclick="buyMarket('${p.id}', ${cost})">Купить ${cost}$</button>
+      <button id="buy-btn-${p.id}" class="market-buy-btn" ontouchstart="" ${coins < cost ? 'disabled' : ''} onclick="buyMarket('${p.id}', ${cost})">Купить ${cost}$</button>
     `;
     grid.appendChild(div);
   });
