@@ -457,7 +457,7 @@ document.getElementById('confirm-reset-btn').onclick = () => {
 
 // === СЕКРЕТНАЯ АДМИНКА (ПРОМОКОДЫ) ===
 let secretPackClicks = 0;
-const packIconEl = document.getElementById('pack');
+const packIconEl = document.getElementById('pack-icon');
 
 packIconEl.addEventListener('click', () => {
   secretPackClicks++;
@@ -472,16 +472,21 @@ packIconEl.addEventListener('click', () => {
       if (!inventory['pele']) inventory['pele'] = { count: 0 };
       inventory['pele'].count++;
       alert('👑 Чит-код принят: Эксклюзивный Пеле (99) добавлен в коллекцию!');
+    } else if (cheatCode === 'all') { // <--- ВОТ НОВЫЙ ЧИТ-КОД
+      players.forEach(p => {
+        if (!inventory[p.id]) inventory[p.id] = { count: 0 };
+        inventory[p.id].count++; // Выдаем по одной копии каждого игрока
+      });
+      alert('🔓 Чит-код принят: Все карточки разблокированы!');
     } else if (cheatCode !== null) {
       alert('❌ Неверный код!');
     }
     
     saveState();
     updateUI();
-    secretPackClicks = 0; // Сбрасываем счетчик
+    secretPackClicks = 0;
   }
   
-  // Если не успел кликнуть 5 раз за 2 секунды — счетчик сбрасывается
   setTimeout(() => secretPackClicks = 0, 2000); 
 });
 
