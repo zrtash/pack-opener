@@ -54,6 +54,8 @@ const packTypes = {
 const questDefinitions = [
   { id: 'open_3', title: 'Новичок', desc: 'Открой 3 пака', target: 3, type: 'packs', reward: 150 },
   { id: 'open_10', title: 'Опытный кейсер', desc: 'Открой 10 паков', target: 10, type: 'packs', reward: 350 },
+  { id: 'elite_5', title: 'Элитный риск', desc: 'Открой 5 элитных паков подряд', target: 5, type: 'elite_streak', reward: 1000 },
+  { id: 'collect_10', title: 'Коллекционер', desc: 'Собери 10 уникальных игроков', target: 10, type: 'unique_players', reward: 600 },
   { id: 'collect_madrid', title: 'Мадридский снайпер', desc: 'Выбей 3 игроков Реал Мадрид', target: 3, type: 'madrid', reward: 400 },
   { id: 'stars_90', title: 'Легендарный улов', desc: 'Выбей игрока с рейтингом 90+', target: 1, type: 'stars', reward: 800 },
   { id: 'rich_club', title: 'Клуб миллионеров', desc: 'Накопи 5 000$ на балансе', target: 5000, type: 'coins', reward: 600 }
@@ -61,6 +63,7 @@ const questDefinitions = [
 
 let coins = parseInt(localStorage.getItem('cards_coins')) || 1000;
 let totalOpened = parseInt(localStorage.getItem('cards_totalOpened')) || 0;
+let eliteStreak = parseInt(localStorage.getItem('cards_eliteStreak')) || 0;
 let inventory = JSON.parse(localStorage.getItem('cards_inventory')) || {};
 let squad = JSON.parse(localStorage.getItem('cards_squad')) || { LW:null, ST:null, RW:null, LCM:null, CM:null, RCM:null, LB:null, LCB:null, RCB:null, RB:null, GK:null };
 let completedQuests = JSON.parse(localStorage.getItem('cards_completed_quests')) || [];
@@ -72,7 +75,6 @@ let lastDroppedPlayer = null;
 let selectedPitchPos = null;
 let activeFilter = 'all';
 
-// Проверка таймера на бонус каждые 12 часов
 function checkDailyBonus() {
   const lastBonusTime = parseInt(localStorage.getItem('cards_last_bonus')) || 0;
   const now = Date.now();
@@ -90,6 +92,7 @@ checkDailyBonus();
 function saveState() {
   localStorage.setItem('cards_coins', coins);
   localStorage.setItem('cards_totalOpened', totalOpened);
+  localStorage.setItem('cards_eliteStreak', eliteStreak);
   localStorage.setItem('cards_inventory', JSON.stringify(inventory));
   localStorage.setItem('cards_squad', JSON.stringify(squad));
   localStorage.setItem('cards_completed_quests', JSON.stringify(completedQuests));
@@ -101,7 +104,6 @@ function updateUI() {
   document.getElementById('btn').textContent = `Открыть (${packTypes[currentPackType].cost}$)`;
   document.getElementById('btn').disabled = coins < packTypes[currentPackType].cost;
   
-  // Улучшенный счетчик коллекции (Уникальные / Всего)
   const collectedCount = players.filter(p => inventory[p.id]?.count > 0).length;
   document.getElementById('collection-count').textContent = collectedCount;
   document.getElementById('collection-total').textContent = players.length;
@@ -179,6 +181,8 @@ function renderQuests() {
     const isCompleted = completedQuests.includes(q.id);
     let progress = 0;
     if (q.type === 'packs') progress = totalOpened;
+    if (q.type === 'elite_streak') progress = eliteStreak;
+    if (q.type === 'unique_players') progress = players.filter(p => inventory[p.id]?.count > 0).length;
     if (q.type === 'madrid') progress = players.filter(p => p.club === 'Real Madrid').reduce((sum, p) => sum + (inventory[p.id]?.count || 0), 0);
     if (q.type === 'stars') progress = players.filter(p => p.raiting >= 90).reduce((sum, p) => sum + (inventory[p.id]?.count || 0), 0);
     if (q.type === 'coins') progress = coins;
@@ -376,6 +380,14 @@ document.querySelectorAll('.pack-tab').forEach(tab => {
 
 btn.onclick = () => {
   if (coins < packTypes[currentPackType].cost) return;
+  
+  // Учет серии элитных паков
+  if (currentPackType === 'elite') {
+    eliteStreak++;
+  } else {
+    eliteStreak = 0; // Сгорает, если открыл обычный
+  }
+
   coins -= packTypes[currentPackType].cost;
   updateUI(); saveState();
   
@@ -466,6 +478,7 @@ resetModal.onclick = (e) => {
 document.getElementById('confirm-reset-btn').onclick = () => {
   localStorage.removeItem('cards_coins');
   localStorage.removeItem('cards_totalOpened');
+  localStorage.removeItem('cards_eliteStreak');
   localStorage.removeItem('cards_inventory');
   localStorage.removeItem('cards_squad');
   localStorage.removeItem('cards_completed_quests');
@@ -489,7 +502,7 @@ packIconEl.addEventListener('click', () => {
     } else if (cheatCode === 'pele') {
       if (!inventory['pele']) inventory['pele'] = { count: 0 };
       inventory['pele'].count++;
-      alert('👑 Чит-код принят: Эксклюзивный Пеле (99) добавлен в коллекцию!');
+      alert('👑 Чит-код принят: Эксклюзивный Пеле добавлен в коллекцию!');
     } else if (cheatCode === 'all') { 
       players.forEach(p => {
         if (!inventory[p.id]) inventory[p.id] = { count: 0 };
