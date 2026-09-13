@@ -1,24 +1,25 @@
 const players = [
-  { id: 'pele', name: 'Pele (ICON)', raiting: 99, club: 'Icons', league: 'Icon', pos: 'ST', price: 5000, photo: './pele.png' },
-  { id: 'mbappe', name: 'K. Mbappe', raiting: 91, club: 'Real Madrid', league: 'La Liga', pos: 'ST', price: 300, photo: 'https://images.fotmob.com/image_resources/playerimages/701154.png' },
-  { id: 'haaland', name: 'E. Haaland', raiting: 91, club: 'Man City', league: 'Premier League', pos: 'ST', price: 300, photo: 'https://images.fotmob.com/image_resources/playerimages/737066.png' },
-  { id: 'vini', name: 'Vinicius JR', raiting: 90, club: 'Real Madrid', league: 'La Liga', pos: 'LW', price: 250, photo: 'https://images.fotmob.com/image_resources/playerimages/846033.png' },
-  { id: 'salah', name: 'M. Salah', raiting: 89, club: 'Liverpool', league: 'Premier League', pos: 'RW', price: 220, photo: 'https://images.fotmob.com/image_resources/playerimages/292462.png' },
-  { id: 'yamal', name: 'L. Yamal', raiting: 87, club: 'Barcelona', league: 'La Liga', pos: 'RW', price: 150, photo: 'https://images.fotmob.com/image_resources/playerimages/1467236.png' },
-  { id: 'foden', name: 'P. Foden', raiting: 88, club: 'Man City', league: 'Premier League', pos: 'LW', price: 180, photo: 'https://images.fotmob.com/image_resources/playerimages/815006.png' },
-  { id: 'guler', name: 'A. Guler', raiting: 78, club: 'Real Madrid', league: 'La Liga', pos: 'CM', price: 50, photo: 'https://images.fotmob.com/image_resources/playerimages/1253890.png' },
-  { id: 'courtois', name: 'T. Courtois', raiting: 90, club: 'Real Madrid', league: 'La Liga', pos: 'GK', price: 150, photo: 'https://images.fotmob.com/image_resources/playerimages/170323.png' },
-  { id: 'rudiger', name: 'A. Rudiger', raiting: 88, club: 'Real Madrid', league: 'La Liga', pos: 'CB', price: 120, photo: 'https://images.fotmob.com/image_resources/playerimages/276738.png' },
-  { id: 'walker', name: 'K. Walker', raiting: 84, club: 'Burnley', league: 'Premier League', pos: 'RB', price: 70, photo: './walker.png' },
-  { id: 'bellingham', name: 'J. Bellingham', raiting: 90, club: 'Real Madrid', league: 'La Liga', pos: 'CAM', price: 2000, photo: './bellingham.png' },
-  { id: 'valverde', name: 'F. Valverde', raiting: 88, club: 'Real Madrid', league: 'La Liga', pos: 'CM', price: 1200, photo: './valverde.png' },
-  { id: 'rodrygo', name: 'Rodrygo', raiting: 85, club: 'Real Madrid', league: 'La Liga', pos: 'RW', price: 800, photo: './rodrygo.png' },
-  { id: 'modric', name: 'L. Modric', raiting: 87, club: 'Milan', league: 'Seria A', pos: 'CM', price: 1000, photo: './modric.png' },
-  { id: 'camavinga', name: 'E. Camavinga', raiting: 82, club: 'Real Madrid', league: 'La Liga', pos: 'CDM', price: 500, photo: './camavinga.png' },
-  { id: 'tchouameni', name: 'A. Tchouameni', raiting: 84, club: 'Real Madrid', league: 'La Liga', pos: 'CDM', price: 600, photo: './tchouameni.png' }
+  { id: 'maradona', name: 'Maradona (ICON)', raiting: 100, club: 'Icons', league: 'Icon', pos: 'CAM', price: 3600, photo: 'https://images.fotmob.com/image_resources/playerimages/158546.png' },
+  { id: 'pele', name: 'Pele (ICON)', raiting: 100, club: 'Icons', league: 'Icon', pos: 'ST', price: 3500, photo: './pele.png' },
+  { id: 'ronaldo', name: 'Cristiano Ronaldo', raiting: 92, club: 'Al-Nasr', league: 'Saudi Pro League', pos: 'ST', price: 650, photo: 'https://images.fotmob.com/image_resources/playerimages/30893.png' },
+  { id: 'mbappe', name: 'K. Mbappe', raiting: 91, club: 'Real Madrid', league: 'La Liga', pos: 'ST', price: 450, photo: 'https://images.fotmob.com/image_resources/playerimages/701154.png' },
+  { id: 'haaland', name: 'E. Haaland', raiting: 91, club: 'Man City', league: 'Premier League', pos: 'ST', price: 450, photo: 'https://images.fotmob.com/image_resources/playerimages/737066.png' },
+  { id: 'vini', name: 'Vinicius JR', raiting: 90, club: 'Real Madrid', league: 'La Liga', pos: 'LW', price: 400, photo: 'https://images.fotmob.com/image_resources/playerimages/846033.png' },
+  { id: 'salah', name: 'M. Salah', raiting: 89, club: 'Liverpool', league: 'Premier League', pos: 'RW', price: 250, photo: 'https://images.fotmob.com/image_resources/playerimages/292462.png' },
+  { id: 'yamal', name: 'L. Yamal', raiting: 89, club: 'Barcelona', league: 'La Liga', pos: 'RW', price: 235, photo: 'https://images.fotmob.com/image_resources/playerimages/1467236.png' },
+  { id: 'foden', name: 'P. Foden', raiting: 88, club: 'Man City', league: 'Premier League', pos: 'LW', price: 240, photo: 'https://images.fotmob.com/image_resources/playerimages/815006.png' },
+  { id: 'guler', name: 'A. Guler', raiting: 78, club: 'Real Madrid', league: 'La Liga', pos: 'CM', price: 70, photo: 'https://images.fotmob.com/image_resources/playerimages/1253890.png' },
+  { id: 'courtois', name: 'T. Courtois', raiting: 90, club: 'Real Madrid', league: 'La Liga', pos: 'GK', price: 390, photo: 'https://images.fotmob.com/image_resources/playerimages/170323.png' },
+  { id: 'rudiger', name: 'A. Rudiger', raiting: 88, club: 'Real Madrid', league: 'La Liga', pos: 'CB', price: 250, photo: 'https://images.fotmob.com/image_resources/playerimages/276738.png' },
+  { id: 'walker', name: 'K. Walker', raiting: 84, club: 'Burnley', league: 'Premier League', pos: 'RB', price: 160, photo: './walker.png' },
+  { id: 'bellingham', name: 'J. Bellingham', raiting: 90, club: 'Real Madrid', league: 'La Liga', pos: 'CAM', price: 400, photo: './bellingham.png' },
+  { id: 'valverde', name: 'F. Valverde', raiting: 88, club: 'Real Madrid', league: 'La Liga', pos: 'CM', price: 250, photo: './valverde.png' },
+  { id: 'rodrygo', name: 'Rodrygo', raiting: 85, club: 'Real Madrid', league: 'La Liga', pos: 'RW', price: 200, photo: './rodrygo.png' },
+  { id: 'modric', name: 'L. Modric', raiting: 87, club: 'Milan', league: 'Seria A', pos: 'CM', price: 220, photo: './modric.png' },
+  { id: 'camavinga', name: 'E. Camavinga', raiting: 82, club: 'Real Madrid', league: 'La Liga', pos: 'CDM', price: 150, photo: './camavinga.png' },
+  { id: 'tchouameni', name: 'A. Tchouameni', raiting: 84, club: 'Real Madrid', league: 'La Liga', pos: 'CDM', price: 100, photo: './tchouameni.png' }
 ];
 
-// Умное сокращение имен для поля
 function getShortName(fullName) {
   if (fullName.includes('.')) return fullName.split('. ')[1]; 
   if (fullName.includes('(')) return fullName.split(' ')[0];  
@@ -27,21 +28,23 @@ function getShortName(fullName) {
 
 const packTypes = {
   standard: { 
-    cost: 150, 
+    cost: 200, 
     weights: { 
-      guler: 30, walker: 25, camavinga: 25, tchouameni: 23, 
-      rodrygo: 22, modric: 15, rudiger: 12, yamal: 10, 
-      courtois: 5, foden: 9, valverde: 4, 
-      salah: 2, vini: 1, mbappe: 0.5, haaland: 0.5, bellingham: 0.5 
+      guler: 30, walker: 25, camavinga: 25, tchouameni: 25, 
+      rodrygo: 20, modric: 13, rudiger: 12, yamal: 6, 
+      courtois: 3, foden: 9, valverde: 8, 
+      salah: 4, vini: 2, mbappe: 2, haaland: 2, bellingham: 2, maradona: 0,
+      pele: 0, ronaldo: 0.5
     } 
   },
   elite: { 
-    cost: 400, 
+    cost: 450, 
     weights: { 
       guler: 0, walker: 0, camavinga: 5, tchouameni: 5, 
       rodrygo: 20, modric: 20, rudiger: 20, yamal: 20, 
       courtois: 15, foden: 10, valverde: 10, 
-      salah: 8, vini: 6, mbappe: 4, haaland: 4, bellingham: 4 
+      salah: 8, vini: 6, mbappe: 4, haaland: 4, bellingham: 4, pele: 0.5,
+      maradona: 0.5, ronaldo: 2.5
     } 
   }
 };
@@ -49,8 +52,9 @@ const packTypes = {
 const questDefinitions = [
   { id: 'open_3', title: 'Новичок', desc: 'Открой 3 пака', target: 3, type: 'packs', reward: 150 },
   { id: 'open_10', title: 'Опытный кейсер', desc: 'Открой 10 паков', target: 10, type: 'packs', reward: 350 },
-  { id: 'collect_madrid', title: 'Галактикос', desc: 'Выбей 2 игроков Реал Мадрид', target: 2, type: 'madrid', reward: 300 },
-  { id: 'stars_90', title: 'Суперзвезда', desc: 'Игрок с рейтингом 90+', target: 1, type: 'stars', reward: 250 }
+  { id: 'collect_madrid', title: 'Мадридский снайпер', desc: 'Выбей 3 игроков Реал Мадрид', target: 3, type: 'madrid', reward: 400 },
+  { id: 'stars_90', title: 'Легендарный улов', desc: 'Выбей игрока с рейтингом 90+', target: 1, type: 'stars', reward: 800 },
+  { id: 'rich_club', title: 'Клуб миллионеров', desc: 'Накопи 5 000$ на балансе', target: 5000, type: 'coins', reward: 600 }
 ];
 
 let coins = parseInt(localStorage.getItem('cards_coins')) || 1000;
@@ -66,6 +70,21 @@ let lastDroppedPlayer = null;
 let selectedPitchPos = null;
 let activeFilter = 'all';
 
+// Проверка таймера на бонус каждые 12 часов
+function checkDailyBonus() {
+  const lastBonusTime = parseInt(localStorage.getItem('cards_last_bonus')) || 0;
+  const now = Date.now();
+  const twelveHours = 12 * 60 * 60 * 1000;
+
+  if (now - lastBonusTime > twelveHours) {
+    coins += 500;
+    localStorage.setItem('cards_last_bonus', now);
+    alert('🎁 Ежедневный бонус! Вам начислено +500$ за вход в игру!');
+    saveState();
+  }
+}
+checkDailyBonus();
+
 function saveState() {
   localStorage.setItem('cards_coins', coins);
   localStorage.setItem('cards_totalOpened', totalOpened);
@@ -79,12 +98,15 @@ function updateUI() {
   document.getElementById('pack-count').textContent = totalOpened;
   document.getElementById('btn').textContent = `Открыть (${packTypes[currentPackType].cost}$)`;
   document.getElementById('btn').disabled = coins < packTypes[currentPackType].cost;
-  document.getElementById('collection-count').textContent = players.filter(p => inventory[p.id]?.count > 0).length;
+  
+  // Улучшенный счетчик коллекции (Уникальные / Всего)
+  const collectedCount = players.filter(p => inventory[p.id]?.count > 0).length;
+  document.getElementById('collection-count').textContent = collectedCount;
   document.getElementById('collection-total').textContent = players.length;
 }
 
 function checkBankruptcy() {
-  const minCost = 150;
+  const minCost = packTypes.standard.cost;
   const totalCardsValue = players.reduce((sum, p) => sum + (inventory[p.id]?.count || 0) * p.price, 0);
   if (coins + totalCardsValue < minCost) {
     document.getElementById('final-pack-score').textContent = totalOpened;
@@ -157,6 +179,7 @@ function renderQuests() {
     if (q.type === 'packs') progress = totalOpened;
     if (q.type === 'madrid') progress = players.filter(p => p.club === 'Real Madrid').reduce((sum, p) => sum + (inventory[p.id]?.count || 0), 0);
     if (q.type === 'stars') progress = players.filter(p => p.raiting >= 90).reduce((sum, p) => sum + (inventory[p.id]?.count || 0), 0);
+    if (q.type === 'coins') progress = coins;
     
     const canClaim = !isCompleted && progress >= q.target;
     const div = document.createElement('div');
@@ -241,7 +264,7 @@ function renderSquadPicker() {
 function renderMarket() {
   const grid = document.getElementById('market-grid');
   grid.innerHTML = '';
-  players.filter(p => p.id !== 'pele').forEach(p => {
+  players.filter(p => p.id !== 'pele' && p.id !== 'maradona').forEach(p => {
     const cost = p.price * 5;
     const div = document.createElement('div');
     div.className = `mini-card ${p.raiting >= 90 ? 'card-gold' : p.raiting >= 85 ? 'card-silver' : 'card-bronze'}`;
@@ -266,7 +289,7 @@ window.buyMarket = function(id, cost) {
   saveState(); 
   updateUI(); 
   
-  players.filter(p => p.id !== 'pele').forEach(p => {
+  players.filter(p => p.id !== 'pele' && p.id !== 'maradona').forEach(p => {
     const btn = document.getElementById(`buy-btn-${p.id}`);
     if (btn) {
       btn.disabled = coins < (p.price * 5);
@@ -300,7 +323,7 @@ function renderSBC() {
 function renderSBCPicker() {
   const el = document.getElementById('sbc-inventory');
   el.innerHTML = '';
-  const avail = players.filter(p => inventory[p.id]?.count > 0 && !sbcBurnList.includes(p.id) && p.id !== 'pele');
+  const avail = players.filter(p => inventory[p.id]?.count > 0 && !sbcBurnList.includes(p.id) && p.id !== 'pele' && p.id !== 'maradona');
   avail.forEach(p => {
     const div = document.createElement('div');
     div.className = 'squad-picker-card';
@@ -318,8 +341,12 @@ document.getElementById('sbc-submit-btn').onclick = () => {
   document.getElementById('sbc-modal').style.display = 'none';
   saveState(); updateUI();
   
-  const isPele = Math.random() < 0.10;
-  const reward = isPele ? players.find(p=>p.id==='pele') : players.find(p=>p.id==='mbappe');
+  const randReward = Math.random();
+  let reward;
+  if (randReward < 0.05) reward = players.find(p=>p.id==='maradona');
+  else if (randReward < 0.15) reward = players.find(p=>p.id==='pele');
+  else reward = players.find(p=>p.id==='mbappe');
+
   revealCard(reward, true);
 };
 
@@ -440,6 +467,7 @@ document.getElementById('confirm-reset-btn').onclick = () => {
   localStorage.removeItem('cards_inventory');
   localStorage.removeItem('cards_squad');
   localStorage.removeItem('cards_completed_quests');
+  localStorage.removeItem('cards_last_bonus');
   
   location.reload();
 };
