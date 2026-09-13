@@ -81,7 +81,38 @@ body { margin: 0; min-height: 100vh; background-color: #0b1120; color: #f8fafc; 
 .squad-picker-card:hover { border-color: #38bdf8; }
 
 /* Market & Bank */
-.market-buy-btn { background: #f59e0b; color: #111827; border: none; padding: 6px; width: 100%; margin-top: auto; border-radius: 6px; font-weight: 800; cursor: pointer; }
+/* Кнопка покупки на рынке */
+.market-buy-btn { 
+  background: #f59e0b; 
+  color: #111827; 
+  border: none; 
+  padding: 6px; 
+  width: 100%; 
+  margin-top: auto; 
+  border-radius: 6px; 
+  font-weight: 800; 
+  cursor: pointer; 
+  transition: all 0.15s ease; /* Плавная анимация */
+}
+
+/* Эффект при наведении (немного увеличивается) */
+.market-buy-btn:hover:not(:disabled) {
+  background: #fbbf24;
+  transform: scale(1.05);
+}
+
+/* Эффект при клике (вдавливается внутрь) */
+.market-buy-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+/* Состояние, когда не хватает денег */
+.market-buy-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #b45309;
+  color: #fef3c7;
+}
 .bank-options { display: flex; flex-direction: column; gap: 10px; }
 .bank-btn { background: linear-gradient(135deg, #10b981, #047857); color: #fff; border: none; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: 800; cursor: pointer; }
 .bank-btn:hover { opacity: 0.9; }
