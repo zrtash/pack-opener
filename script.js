@@ -10,16 +10,16 @@ const players = [
   { id: 'salah', name: 'M. Salah', raiting: 89, club: 'Liverpool', league: 'Premier League', pos: 'RW', price: 220, photo: 'https://images.fotmob.com/image_resources/playerimages/292462.png' },
   { id: 'yamal', name: 'L. Yamal', raiting: 89, club: 'Barcelona', league: 'La Liga', pos: 'RW', price: 235, photo: 'https://images.fotmob.com/image_resources/playerimages/1467236.png' },
   { id: 'foden', name: 'P. Foden', raiting: 88, club: 'Man City', league: 'Premier League', pos: 'LW', price: 210, photo: 'https://images.fotmob.com/image_resources/playerimages/815006.png' },
-  { id: 'guler', name: 'A. Guler', raiting: 78, club: 'Real Madrid', league: 'La Liga', pos: 'CM', price: 150, photo: 'https://images.fotmob.com/image_resources/playerimages/1253890.png' },
+  { id: 'guler', name: 'A. Guler', raiting: 78, club: 'Real Madrid', league: 'La Liga', pos: 'CM', price: 190, photo: 'https://images.fotmob.com/image_resources/playerimages/1253890.png' },
   { id: 'courtois', name: 'T. Courtois', raiting: 90, club: 'Real Madrid', league: 'La Liga', pos: 'GK', price: 390, photo: 'https://images.fotmob.com/image_resources/playerimages/170323.png' },
   { id: 'rudiger', name: 'A. Rudiger', raiting: 88, club: 'Real Madrid', league: 'La Liga', pos: 'CB', price: 230, photo: 'https://images.fotmob.com/image_resources/playerimages/276738.png' },
-  { id: 'walker', name: 'K. Walker', raiting: 84, club: 'Burnley', league: 'Premier League', pos: 'RB', price: 160, photo: './walker.png' },
+  { id: 'walker', name: 'K. Walker', raiting: 84, club: 'Burnley', league: 'Premier League', pos: 'RB', price: 200, photo: './walker.png' },
   { id: 'bellingham', name: 'J. Bellingham', raiting: 90, club: 'Real Madrid', league: 'La Liga', pos: 'CAM', price: 400, photo: './bellingham.png' },
   { id: 'valverde', name: 'F. Valverde', raiting: 88, club: 'Real Madrid', league: 'La Liga', pos: 'CM', price: 220, photo: './valverde.png' },
-  { id: 'rodrygo', name: 'Rodrygo', raiting: 85, club: 'Real Madrid', league: 'La Liga', pos: 'RW', price: 200, photo: './rodrygo.png' },
-  { id: 'modric', name: 'L. Modric', raiting: 87, club: 'Milan', league: 'Seria A', pos: 'CM', price: 200, photo: './modric.png' },
-  { id: 'camavinga', name: 'E. Camavinga', raiting: 82, club: 'Real Madrid', league: 'La Liga', pos: 'CDM', price: 180, photo: './camavinga.png' },
-  { id: 'tchouameni', name: 'A. Tchouameni', raiting: 84, club: 'Real Madrid', league: 'La Liga', pos: 'CDM', price: 160, photo: './tchouameni.png' }
+  { id: 'rodrygo', name: 'Rodrygo', raiting: 85, club: 'Real Madrid', league: 'La Liga', pos: 'RW', price: 210, photo: './rodrygo.png' },
+  { id: 'modric', name: 'L. Modric', raiting: 87, club: 'Milan', league: 'Seria A', pos: 'CM', price: 220, photo: './modric.png' },
+  { id: 'camavinga', name: 'E. Camavinga', raiting: 82, club: 'Real Madrid', league: 'La Liga', pos: 'CDM', price: 210, photo: './camavinga.png' },
+  { id: 'tchouameni', name: 'A. Tchouameni', raiting: 84, club: 'Real Madrid', league: 'La Liga', pos: 'CDM', price: 190, photo: './tchouameni.png' }
 ];
 
 function getShortName(fullName) {
