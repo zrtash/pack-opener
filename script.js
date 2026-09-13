@@ -613,4 +613,36 @@ document.getElementById('admin-submit-btn').onclick = async () => {
   }
 };
 
+// Удаление карточки из Firebase
+document.getElementById('admin-delete-btn').onclick = async () => {
+  const nameInput = document.getElementById('admin-delete-name').value;
+  
+  if (!nameInput) {
+    return alert('Введи имя карточки, которую хочешь удалить!');
+  }
+
+  // Превращаем введенное имя в ID, точно так же, как мы делали при создании
+  const idToDelete = nameInput.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+  if (confirm(`Ты уверен, что хочешь удалить игрока "${nameInput}" из глобальной базы?`)) {
+    try {
+      // Импортируем функцию удаления
+      const { deleteDoc, doc } = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
+      
+      // Удаляем документ из коллекции "players"
+      await deleteDoc(doc(db, "players", idToDelete));
+      
+      alert('🗑️ Карточка успешно удалена из базы!');
+      document.getElementById('admin-delete-name').value = '';
+      
+      // Перезагружаем страницу, чтобы карточка сразу исчезла из игры
+      location.reload();
+      
+    } catch (error) {
+      console.error("Ошибка при удалении:", error);
+      alert('❌ Произошла ошибка. Карточка не удалена.');
+    }
+  }
+};
+
 updateUI();
