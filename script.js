@@ -233,11 +233,13 @@ function renderMarket() {
     const cost = p.price * 5;
     const div = document.createElement('div');
     div.className = `mini-card ${p.raiting >= 90 ? 'card-gold' : p.raiting >= 85 ? 'card-silver' : 'card-bronze'}`;
+    
+    // Добавили кнопке уникальный ID и атрибут disabled
     div.innerHTML = `
       <span class="mini-card-rating">${p.raiting}</span>
       <img class="mini-card-photo" src="${p.photo}">
       <span class="mini-card-name">${p.name}</span>
-      <button class="market-buy-btn" ${coins < cost ? 'style="opacity:0.5"' : ''} onclick="buyMarket('${p.id}', ${cost})">Купить ${cost}$</button>
+      <button id="buy-btn-${p.id}" class="market-buy-btn" ${coins < cost ? 'disabled' : ''} onclick="buyMarket('${p.id}', ${cost})">Купить ${cost}$</button>
     `;
     grid.appendChild(div);
   });
@@ -245,10 +247,22 @@ function renderMarket() {
 
 window.buyMarket = function(id, cost) {
   if (coins < cost) return alert('Недостаточно денег!');
+  
   coins -= cost;
   if(!inventory[id]) inventory[id] = {count:0};
   inventory[id].count++;
-  saveState(); updateUI(); renderMarket();
+  
+  saveState(); 
+  updateUI(); 
+  
+  // ВМЕСТО ПОЛНОЙ ПЕРЕРИСОВКИ РЫНКА (из-за чего моргали фото):
+  // Мы просто пробегаемся по кнопкам и выключаем те, на которые больше нет денег
+  players.filter(p => p.id !== 'pele').forEach(p => {
+    const btn = document.getElementById(`buy-btn-${p.id}`);
+    if (btn) {
+      btn.disabled = coins < (p.price * 5);
+    }
+  });
 };
 
 // === МЕНЮ: СБОРКИ (ИПК) ===
