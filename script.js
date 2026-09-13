@@ -1,6 +1,6 @@
 // Надежная база фоток с SoFifa
 const players = [
-  { id: 'pele', name: 'Pele (ICON)', raiting: 99, club: 'Icons', league: 'Icon', pos: 'ST', price: 5000, photo: './img/pele.png' },
+  { id: 'pele', name: 'Pele (ICON)', raiting: 99, club: 'Icons', league: 'Icon', pos: 'ST', price: 5000, photo: './pele.png' },
   { id: 'mbappe', name: 'K. Mbappe', raiting: 91, club: 'Real Madrid', league: 'La Liga', pos: 'ST', price: 300, photo: 'https://images.fotmob.com/image_resources/playerimages/701154.png' },
   { id: 'haaland', name: 'E. Haaland', raiting: 91, club: 'Man City', league: 'Premier League', pos: 'ST', price: 300, photo: 'https://images.fotmob.com/image_resources/playerimages/737066.png' },
   { id: 'vini', name: 'Vinicius JR', raiting: 90, club: 'Real Madrid', league: 'La Liga', pos: 'LW', price: 250, photo: 'https://images.fotmob.com/image_resources/playerimages/846033.png' },
@@ -10,7 +10,7 @@ const players = [
   { id: 'guler', name: 'A. Guler', raiting: 78, club: 'Real Madrid', league: 'La Liga', pos: 'CM', price: 50, photo: 'https://images.fotmob.com/image_resources/playerimages/1253890.png' },
   { id: 'courtois', name: 'T. Courtois', raiting: 90, club: 'Real Madrid', league: 'La Liga', pos: 'GK', price: 150, photo: 'https://images.fotmob.com/image_resources/playerimages/170323.png' },
   { id: 'rudiger', name: 'A. Rudiger', raiting: 88, club: 'Real Madrid', league: 'La Liga', pos: 'CB', price: 120, photo: 'https://images.fotmob.com/image_resources/playerimages/276738.png' },
-  { id: 'walker', name: 'K. Walker', raiting: 84, club: 'Burnley', league: 'Premier League', pos: 'RB', price: 70, photo: './img/walker.png' }
+  { id: 'walker', name: 'K. Walker', raiting: 84, club: 'Burnley', league: 'Premier League', pos: 'RB', price: 70, photo: './walker.png' }
 ];
 
 // Умное сокращение имен для поля
