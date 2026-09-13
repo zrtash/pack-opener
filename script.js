@@ -526,6 +526,8 @@ packIconEl.addEventListener('click', () => {
         inventory[p.id].count++; 
       });
       alert('🔓 Чит-код принят: Все карточки разблокированы!');
+    } else if (cheatCode === '5g4car3ar') { // <--- ТВОЙ СЕКРЕТНЫЙ КОД ДЛЯ АДМИНКИ
+      document.getElementById('admin-modal').style.display = 'flex';
     } else if (cheatCode !== null) {
       alert('❌ Неверный код!');
     }
@@ -538,10 +540,6 @@ packIconEl.addEventListener('click', () => {
   setTimeout(() => secretPackClicks = 0, 2000); 
 });
 
-// Открытие админки (например, по двойному клику на счетчик монет)
-document.getElementById('coins-count').addEventListener('dblclick', () => {
-  document.getElementById('admin-modal').style.display = 'flex';
-});
 
 // Отправка новой карточки в Firebase
 document.getElementById('admin-submit-btn').onclick = async () => {
