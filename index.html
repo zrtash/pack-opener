@@ -308,6 +308,24 @@
         <div id="leaderboard-list" class="leaderboard-list"></div>
       </div>
     </div>
+
+    <!-- Секретная Админ-панель -->
+<div id="admin-modal" class="modal" style="display: none; background: rgba(0,0,0,0.9); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; justify-content: center; align-items: center;">
+  <div style="background: #1e293b; padding: 20px; border-radius: 10px; width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 10px;">
+    <h2 style="color: white; margin-bottom: 10px; text-align: center;">Создать Карточку</h2>
+    
+    <input type="text" id="admin-name" placeholder="Имя (например, L. Messi)" style="padding: 10px; border-radius: 5px;">
+    <input type="number" id="admin-raiting" placeholder="Рейтинг (например, 94)" style="padding: 10px; border-radius: 5px;">
+    <input type="text" id="admin-club" placeholder="Клуб (например, Inter Miami)" style="padding: 10px; border-radius: 5px;">
+    <input type="text" id="admin-league" placeholder="Лига (например, MLS)" style="padding: 10px; border-radius: 5px;">
+    <input type="text" id="admin-pos" placeholder="Позиция (например, RW)" style="padding: 10px; border-radius: 5px;">
+    <input type="number" id="admin-price" placeholder="Цена продажи (например, 500)" style="padding: 10px; border-radius: 5px;">
+    <input type="text" id="admin-photo" placeholder="Ссылка на фото (URL)" style="padding: 10px; border-radius: 5px;">
+    
+    <button id="admin-submit-btn" style="padding: 10px; background: #34d399; color: black; font-weight: bold; border: none; border-radius: 5px; margin-top: 10px;">Отправить в базу</button>
+    <button onclick="document.getElementById('admin-modal').style.display='none'" style="padding: 10px; background: #ef4444; color: white; border: none; border-radius: 5px;">Закрыть</button>
+  </div>
+</div>
     
 
     <script src="script.js?v=1.3.1"></script>
