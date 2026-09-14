@@ -59,8 +59,32 @@ body {
 .btn-sell { background: #064e3b; color: #34d399; border-color: #34d399; }
 .btn-sell:hover:not(:disabled) { background: #34d399; color: #064e3b; }
 
-.nav-buttons { display: flex; gap: 8px; width: 100%; position: relative; z-index: 5; }
-.btn-secondary { flex: 1; background: #1e293b; color: #38bdf8; border-color: #38bdf8; padding: 9px 6px; font-size: 12px; cursor: pointer; touch-action: manipulation; }
+.nav-buttons { 
+  display: flex; 
+  gap: 8px; 
+  width: 100%; 
+  max-width: 100%;
+  box-sizing: border-box;
+  position: relative; 
+  z-index: 5; 
+}
+
+.btn-secondary { 
+  flex: 1; 
+  background: #1e293b; 
+  color: #38bdf8; 
+  border: 1px solid #38bdf8;
+  border-radius: 10px;
+  padding: 10px 4px; /* Уменьшили вертикальные отступы, чтобы кнопки не были «жирными» */
+  font-size: 11px;    /* Чуть уменьшили шрифт, чтобы надписи вроде «Сборки (ИПК)» точно влезали */
+  font-weight: 700;
+  cursor: pointer; 
+  touch-action: manipulation; 
+  box-sizing: border-box;
+  white-space: nowrap; /* Запрещаем тексту переноситься и ломать высоту */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .btn-secondary:hover { opacity: 0.8; }
 
 .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(6px); justify-content: center; align-items: center; z-index: 100; }
