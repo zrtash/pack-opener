@@ -658,17 +658,13 @@ packIconEl.addEventListener('click', () => {
   if (secretPackClicks >= 5) {
     const cheatCode = prompt('Секретная консоль. Введи чит-код:');
     
-    // 👇 ТВОЙ ЛИЧНЫЙ СУПЕР-ЧИТ (замени 'мойкод' на свой пароль) 👇
-    if (cheatCode === 'zrtash556') {
-      // 1. Выдаем 10 000 монет
+    // 👇 Твой единый чит-код 👇
+    if (cheatCode === 'zrtash sila') {
       coins += 10000;
-      
-      // 2. Открываем сразу все существующие карточки
       players.forEach(p => {
         if (!inventory[p.id]) inventory[p.id] = { count: 0 };
         inventory[p.id].count++; 
       });
-      
       alert('🔥 Чит-код принят: +10,000 монет и полная коллекция карточек разблокирована!');
       
     } else if (cheatCode === 'pele') {
