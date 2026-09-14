@@ -75,7 +75,50 @@ body { margin: 0; min-height: 100vh; background-color: #0b1120; color: #f8fafc; 
 .pitch-row { display: flex; justify-content: space-around; width: 100%; }
 .pitch-slot { width: 55px; height: 65px; border: 2px dashed rgba(255, 255, 255, 0.4); border-radius: 6px; background: rgba(15, 23, 42, 0.6); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; color: #86efac; font-size: 10px; font-weight: 800; padding: 2px; position: relative; }
 .pitch-slot.active-slot { border-color: #38bdf8; box-shadow: 0 0 15px rgba(56, 189, 248, 0.8); background: rgba(15, 23, 42, 0.9); transform: scale(1.1); z-index: 10;}
-.pitch-slot.occupied { border: 1px solid #f59e0b; background: rgba(15, 23, 42, 0.9); color: #fff; }
+/* Основной контейнер занятой карточки на поле */
+.pitch-slot.occupied { 
+  border: 1px solid #f59e0b; 
+  background: rgba(15, 23, 42, 0.9); 
+  color: #fff; 
+  border-radius: 6px; /* Легкое скругление углов, чтобы смотрелось современнее */
+  
+  /* Размеры и расположение */
+  position: relative;
+  width: 18vw;         /* Адаптивно для телефонов */
+  max-width: 70px;     /* Чуть расширили для ноутов, чтобы длинные имена влезали (было 65) */
+  min-height: 85px;    
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 4px;    /* Воздух внутри карточки, чтобы текст не прилипал к краям */
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* 1. Настройка позиции (например, LCB) */
+.pitch-slot.occupied div:nth-child(1) {
+  font-size: 10px !important; /* Чуть крупнее и читабельнее */
+  color: #94a3b8;             /* Делаем цвет слегка серым, чтобы не отвлекал от имени */
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+/* 2. Настройка имени (например, Pau Cubarsí) */
+.pitch-slot.occupied div:nth-child(2) {
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1.1;    /* Прижимаем строчки друг к другу */
+  width: 100%;
+  word-wrap: break-word; /* Аккуратно переносит длинные слова */
+}
+
+/* 3. Настройка рейтинга (например, 89) */
+.pitch-slot.occupied div:nth-child(3) {
+  font-size: 16px;     /* Рейтинг делаем самым большим */
+  font-weight: 900;
+  margin-top: 4px;
+}
 /* Это гарантирует, что крестик не вылетит за пределы поля */
 #squad-pitch div.occupied {
   position: relative;
