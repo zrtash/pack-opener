@@ -52,8 +52,8 @@ const packTypes = {
       guler: 30, walker: 25, camavinga: 25, tchouameni: 25, 
       rodrygo: 20, modric: 13, rudiger: 12, yamal: 6, 
       courtois: 3, foden: 9, valverde: 8, 
-      salah: 4, vini: 2, mbappe: 2, haaland: 2, bellingham: 2, maradona: 0,
-      pele: 0, ronaldo: 0.7, raphinha: 1.5, garcia: 3
+      salah: 3, vini: 1, mbappe: 1, haaland: 1, bellingham: 1, maradona: 0,
+      pele: 0, ronaldo: 0.2, raphinha: 1.5, garcia: 3
     } 
   },
   elite: { 
@@ -62,8 +62,8 @@ const packTypes = {
       guler: 0, walker: 0, camavinga: 5, tchouameni: 5, 
       rodrygo: 20, modric: 20, rudiger: 20, yamal: 20, 
       courtois: 15, foden: 10, valverde: 10, 
-      salah: 8, vini: 5, mbappe: 4, haaland: 4, bellingham: 4, pele: 0.4,
-      maradona: 0.4, ronaldo: 2.5, raphinha: 4.5, garcia: 5
+      salah: 8, vini: 5, mbappe: 4, haaland: 4, bellingham: 4, pele: 0.1,
+      maradona: 0.1, ronaldo: 2.5, raphinha: 4.5, garcia: 5
     } 
   }
 };
