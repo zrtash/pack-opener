@@ -52,18 +52,20 @@ const packTypes = {
       guler: 30, walker: 25, camavinga: 25, tchouameni: 25, 
       rodrygo: 20, modric: 13, rudiger: 12, yamal: 6, 
       courtois: 3, foden: 9, valverde: 8, 
-      salah: 3, vini: 1, mbappe: 1, haaland: 1, bellingham: 1, maradona: 0,
-      pele: 0, ronaldo: 0.2, raphinha: 1.5, garcia: 3
+      salah: 3, vini: 1, mbappe: 1, haaland: 1, bellingham: 1, maradona: 0.0001,
+      pele: 0.0001, ronaldo: 0.2, raphinha: 1.5, garcia: 3
     } 
   },
   elite: { 
     cost: 450, 
     weights: { 
-      guler: 0, walker: 0, camavinga: 5, tchouameni: 5, 
-      rodrygo: 20, modric: 20, rudiger: 20, yamal: 20, 
-      courtois: 15, foden: 10, valverde: 10, 
-      salah: 8, vini: 5, mbappe: 4, haaland: 4, bellingham: 4, pele: 0.1,
-      maradona: 0.1, ronaldo: 2.5, raphinha: 4.5, garcia: 5
+      guler: 0, walker: 0, camavinga: 2, tchouameni: 2, 
+      rodrygo: 10, modric: 10, rudiger: 10, yamal: 10, 
+      courtois: 8, foden: 8, valverde: 8, 
+      salah: 5, vini: 3, mbappe: 2, haaland: 2, bellingham: 2, 
+      ronaldo: 1.5, raphinha: 6, garcia: 10,
+      pele: 0.05,
+      maradona: 0.05
     } 
   }
 };
@@ -392,11 +394,25 @@ document.getElementById('sbc-submit-btn').onclick = () => {
   document.getElementById('sbc-modal').style.display = 'none';
   saveState(); updateUI();
   
-  const randReward = Math.random();
+  const rand = Math.random();
   let reward;
-  if (randReward < 0.05) reward = players.find(p=>p.id==='maradona');
-  else if (randReward < 0.15) reward = players.find(p=>p.id==='pele');
-  else reward = players.find(p=>p.id==='mbappe');
+
+  // Шанс 1% (0.01) на Марадону
+  if (rand < 0.01) {
+    reward = players.find(p => p.id === 'maradona');
+  } 
+  // Шанс 2% (от 0.01 до 0.03) на Пеле
+  else if (rand < 0.01) {
+    reward = players.find(p => p.id === 'pele');
+  } 
+  // В остальных случаях — случайный элитный игрок с рейтингом 88+
+  else {
+    const topPlayers = players.filter(p => p.raiting >= 88 && p.id !== 'maradona' && p.id !== 'pele');
+    reward = topPlayers[Math.floor(Math.random() * topPlayers.length)];
+    
+    // Страховка, если вдруг список пуст
+    if (!reward) reward = players.find(p => p.id === 'mbappe') || players[0];
+  }
 
   revealCard(reward, true);
 };
