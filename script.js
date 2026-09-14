@@ -502,68 +502,7 @@ sellBtn.onclick = () => {
   checkBankruptcy();
 };
 
-document.getElementById('open-collection-btn').onclick = () => { initSlots(); document.getElementById('collection-modal').style.display = 'flex'; };
-document.getElementById('open-quests-btn').onclick = () => { renderQuests(); document.getElementById('quests-modal').style.display = 'flex'; };
-document.getElementById('open-leaderboard-btn').onclick = () => { renderLeaderboard(); document.getElementById('leaderboard-modal').style.display = 'flex'; };
-document.getElementById('open-squad-btn').onclick = () => { renderSquad(); renderSquadPicker(); document.getElementById('squad-modal').style.display = 'flex'; };
-document.getElementById('open-market-btn').onclick = () => { renderMarket(); document.getElementById('market-modal').style.display = 'flex'; };
-document.getElementById('open-sbc-btn').onclick = () => { sbcBurnList = []; renderSBC(); renderSBCPicker(); document.getElementById('sbc-modal').style.display = 'flex'; };
-document.getElementById('open-bank-btn').onclick = () => { document.getElementById('bank-modal').style.display = 'flex'; };
-
-document.querySelectorAll('[data-close]').forEach(btn => {
-  btn.onclick = () => document.getElementById(btn.dataset.close).style.display = 'none';
-});
-
-document.getElementById('save-score-btn').onclick = () => {
-  leaderboard.push({ name: document.getElementById('player-nickname').value || 'Игрок', score: totalOpened });
-  leaderboard.sort((a,b)=>b.score-a.score);
-  localStorage.setItem('cards_leaderboard', JSON.stringify(leaderboard.slice(0,10)));
-  
-  localStorage.clear(); 
-  location.reload(); 
-};
-
-const resetModal = document.getElementById('reset-modal');
-
-document.getElementById('reset-btn').onclick = () => {
-  resetModal.style.display = 'flex';
-};
-
-document.getElementById('cancel-reset-btn').onclick = () => {
-  resetModal.style.display = 'none';
-};
-
-resetModal.onclick = (e) => {
-  if (e.target === resetModal) resetModal.style.display = 'none';
-};
-
-document.getElementById('confirm-reset-btn').onclick = () => {
-  localStorage.removeItem('cards_coins');
-  localStorage.removeItem('cards_totalOpened');
-  localStorage.removeItem('cards_eliteStreak');
-  localStorage.removeItem('cards_inventory');
-  localStorage.removeItem('cards_squad');
-  localStorage.removeItem('cards_completed_quests');
-  localStorage.removeItem('cards_last_bonus');
-  
-  location.reload();
-};
-
-let secretPackClicks = 0;
-const packIconEl = document.getElementById('pack');
-
-packIconEl.addEventListener('click', () => {
-  secretPackClicks++;
-  
-  if (secretPackClicks >= 5) {
-    // Сразу открываем окно авторизации без лишних prompt-окон
-    document.getElementById('admin-modal').style.display = 'flex';
-    secretPackClicks = 0;
-  }
-  
-  setTimeout(() => secretPackClicks = 0, 2000); 
-});
-
+// --- ОТПРАВКА И УДАЛЕНИЕ КАРТОЧЕК В БАЗЕ ---
 
 // Отправка новой карточки в Firebase
 document.getElementById('admin-submit-btn').onclick = async () => {
@@ -581,24 +520,16 @@ document.getElementById('admin-submit-btn').onclick = async () => {
     return alert('Заполни как минимум Имя, Рейтинг и Фото!');
   }
 
-  // Генерируем ID игрока (например из "L. Messi" получится "lmessi")
   const id = name.toLowerCase().replace(/[^a-z0-9]/g, '');
 
   try {
-    // Импортируем функцию добавления (если она еще не импортирована)
     const { collection, setDoc, doc } = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
-
-    // Сохраняем в коллекцию "players"
     await setDoc(doc(db, "players", id), {
       id, name, raiting, club, league, pos, price, photo, weightStandard, weightElite
     });
-    
     alert('✅ Карточка успешно отправлена в общую базу данных!');
     document.getElementById('admin-modal').style.display = 'none';
-    
-    // Очищаем форму
     document.querySelectorAll('#admin-modal input').forEach(input => input.value = '');
-    
   } catch (error) {
     console.error("Ошибка:", error);
     alert('❌ Произошла ошибка. Проверь консоль браузера.');
@@ -608,28 +539,17 @@ document.getElementById('admin-submit-btn').onclick = async () => {
 // Удаление карточки из Firebase
 document.getElementById('admin-delete-btn').onclick = async () => {
   const nameInput = document.getElementById('admin-delete-name').value;
-  
-  if (!nameInput) {
-    return alert('Введи имя карточки, которую хочешь удалить!');
-  }
+  if (!nameInput) return alert('Введи имя карточки, которую хочешь удалить!');
 
-  // Превращаем введенное имя в ID, точно так же, как мы делали при создании
   const idToDelete = nameInput.toLowerCase().replace(/[^a-z0-9]/g, '');
 
   if (confirm(`Ты уверен, что хочешь удалить игрока "${nameInput}" из глобальной базы?`)) {
     try {
-      // Импортируем функцию удаления
       const { deleteDoc, doc } = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
-      
-      // Удаляем документ из коллекции "players"
       await deleteDoc(doc(db, "players", idToDelete));
-      
       alert('🗑️ Карточка успешно удалена из базы!');
       document.getElementById('admin-delete-name').value = '';
-      
-      // Перезагружаем страницу, чтобы карточка сразу исчезла из игры
       location.reload();
-      
     } catch (error) {
       console.error("Ошибка при удалении:", error);
       alert('❌ Произошла ошибка. Карточка не удалена.');
@@ -639,18 +559,43 @@ document.getElementById('admin-delete-btn').onclick = async () => {
 
 // --- ЛОГИКА АВТОРИЗАЦИИ АДМИНА ---
 
-// 1. Слушаем, вошел ли админ в систему (Firebase сам это запоминает!)
+// 1. Слушаем, вошел ли админ в систему
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    // Пользователь вошел! Показываем панель создания карточек
     document.getElementById('admin-login-section').style.display = 'none';
     document.getElementById('admin-dashboard-section').style.display = 'flex';
   } else {
-    // Пользователь НЕ вошел! Прячем панель, требуем логин
     document.getElementById('admin-login-section').style.display = 'flex';
     document.getElementById('admin-dashboard-section').style.display = 'none';
   }
 });
+
+// 2. Кнопка "Войти"
+document.getElementById('admin-login-btn').onclick = async () => {
+  const email = document.getElementById('admin-email').value;
+  const pass = document.getElementById('admin-password').value;
+  
+  if(!email || !pass) return alert('Введи почту и пароль!');
+
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+    alert('✅ Успешный вход! Права администратора получены.');
+  } catch (error) {
+    console.error("Ошибка входа:", error);
+    alert('❌ Неверный логин или пароль!');
+  }
+};
+
+// 3. Кнопка "Выйти"
+document.getElementById('admin-logout-btn').onclick = async () => {
+  await signOut(auth);
+  alert('🚪 Вы вышли из аккаунта.');
+};
+
+// --- ЧИТ-КОДЫ И 5 КЛИКОВ ---
+
+let secretPackClicks = 0;
+const packIconEl = document.getElementById('pack');
 
 packIconEl.addEventListener('click', () => {
   secretPackClicks++;
@@ -658,7 +603,6 @@ packIconEl.addEventListener('click', () => {
   if (secretPackClicks >= 5) {
     const cheatCode = prompt('Секретная консоль. Введи чит-код:');
     
-    // 👇 Твой единый чит-код 👇
     if (cheatCode === 'zrtash sila') {
       coins += 10000;
       players.forEach(p => {
@@ -686,11 +630,4 @@ packIconEl.addEventListener('click', () => {
   
   setTimeout(() => secretPackClicks = 0, 2000); 
 });
-
-// 3. Кнопка "Выйти"
-document.getElementById('admin-logout-btn').onclick = async () => {
-  await signOut(auth);
-  alert('🚪 Вы вышли из аккаунта.');
-};
-
 updateUI();
