@@ -271,6 +271,15 @@ function renderLeaderboard() {
   });
 }
 
+// Глобальная функция для удаления игрока из состава
+window.removeFromSquad = function(event, pos) {
+  event.stopPropagation(); // Чтобы при клике на крестик не нажималась сама позиция
+  squad[pos] = null;
+  saveState();
+  renderSquad();
+  renderSquadPicker();
+};
+
 function renderSquad() {
   let totalRating = 0, count = 0;
   Object.keys(squad).forEach(pos => {
@@ -283,7 +292,7 @@ function renderSquad() {
 
     if (p) {
       slotEl.classList.add('occupied');
-      slotEl.innerHTML = `<div style="font-size:8px;">${pos}</div><div>${getShortName(p.name)}</div><div>${p.raiting}</div><button class="slot-remove-btn" onclick="event.stopPropagation(); squad['${pos}']=null; saveState(); renderSquad(); renderSquadPicker();">✕</button>`;
+      slotEl.innerHTML = `<div style="font-size:8px;">${pos}</div><div>${getShortName(p.name)}</div><div>${p.raiting}</div><button class="slot-remove-btn" onclick="removeFromSquad(event, '${pos}')">✕</button>`;
       totalRating += p.raiting; count++;
     } else {
       slotEl.classList.remove('occupied');
