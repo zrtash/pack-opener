@@ -593,8 +593,8 @@ document.getElementById('admin-logout-btn').onclick = async () => {
 };
 
 // --- ЧИТ-КОДЫ И 5 КЛИКОВ ---
-
 let secretPackClicks = 0;
+let secretPackTimer = null; // Добавили переменную для таймера
 const packIconEl = document.getElementById('pack');
 
 packIconEl.addEventListener('click', () => {
@@ -616,7 +616,7 @@ packIconEl.addEventListener('click', () => {
       inventory['pele'].count++;
       alert('👑 Чит-код принят: Эксклюзивный Пеле добавлен в коллекцию!');
       
-    } else if (cheatCode === '5g4car3ar') { // Вход в админку
+    } else if (cheatCode === '5g4car3ar') { 
       document.getElementById('admin-modal').style.display = 'flex';
       
     } else if (cheatCode !== null) {
@@ -628,6 +628,9 @@ packIconEl.addEventListener('click', () => {
     secretPackClicks = 0;
   }
   
-  setTimeout(() => secretPackClicks = 0, 2000); 
+  // Сбрасываем старый таймер и ставим новый! 
+  // Теперь у тебя есть ровно 2 секунды после ПОСЛЕДНЕГО клика, а не первого.
+  clearTimeout(secretPackTimer);
+  secretPackTimer = setTimeout(() => secretPackClicks = 0, 2000);  
 });
 updateUI();
