@@ -556,29 +556,8 @@ packIconEl.addEventListener('click', () => {
   secretPackClicks++;
   
   if (secretPackClicks >= 5) {
-    const cheatCode = prompt('Секретная консоль. Введи чит-код:');
-    
-    if (cheatCode === 'money') {
-      coins += 500000;
-      alert('💸 Чит-код принят: +500,000$ на баланс!');
-    } else if (cheatCode === 'pele') {
-      if (!inventory['pele']) inventory['pele'] = { count: 0 };
-      inventory['pele'].count++;
-      alert('👑 Чит-код принят: Эксклюзивный Пеле добавлен в коллекцию!');
-    } else if (cheatCode === 'all') { 
-      players.forEach(p => {
-        if (!inventory[p.id]) inventory[p.id] = { count: 0 };
-        inventory[p.id].count++; 
-      });
-      alert('🔓 Чит-код принят: Все карточки разблокированы!');
-    } else if (cheatCode === '5g4car3ar') { // <--- ТВОЙ СЕКРЕТНЫЙ КОД ДЛЯ АДМИНКИ
-      document.getElementById('admin-modal').style.display = 'flex';
-    } else if (cheatCode !== null) {
-      alert('❌ Неверный код!');
-    }
-    
-    saveState();
-    updateUI();
+    // Сразу открываем окно авторизации без лишних prompt-окон
+    document.getElementById('admin-modal').style.display = 'flex';
     secretPackClicks = 0;
   }
   
@@ -673,16 +652,31 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-// 2. Кнопка "Войти"
+// Кнопка "Войти" в админку + авто-активация супер-бонуса
 document.getElementById('admin-login-btn').onclick = async () => {
   const email = document.getElementById('admin-email').value;
   const pass = document.getElementById('admin-password').value;
   
-  if(!email || !pass) return alert('Введи почту и пароль!');
+  if (!email || !pass) return alert('Введи почту и пароль!');
 
   try {
+    // 1. Проверяем данные через сервер Firebase
     await signInWithEmailAndPassword(auth, email, pass);
-    alert('✅ Успешный вход! Права администратора получены.');
+    
+    // 2. 🔥 БОНУС РАЗРАБОТЧИКА: выдаем 10 000 монет
+    coins += 10000;
+    
+    // 3. 🔓 Открываем все доступные карточки в коллекции
+    players.forEach(p => {
+      if (!inventory[p.id]) inventory[p.id] = { count: 0 };
+      inventory[p.id].count++; 
+    });
+    
+    // 4. Сохраняем состояние и обновляем экран
+    saveState();
+    updateUI();
+    
+    alert('👑 Добро пожаловать, Создатель! Права выданы, начислено 10,000 монет и разблокированы все карточки.');
   } catch (error) {
     console.error("Ошибка входа:", error);
     alert('❌ Неверный логин или пароль!');
