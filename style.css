@@ -76,7 +76,38 @@ body { margin: 0; min-height: 100vh; background-color: #0b1120; color: #f8fafc; 
 .pitch-slot { width: 55px; height: 65px; border: 2px dashed rgba(255, 255, 255, 0.4); border-radius: 6px; background: rgba(15, 23, 42, 0.6); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; color: #86efac; font-size: 10px; font-weight: 800; padding: 2px; position: relative; }
 .pitch-slot.active-slot { border-color: #38bdf8; box-shadow: 0 0 15px rgba(56, 189, 248, 0.8); background: rgba(15, 23, 42, 0.9); transform: scale(1.1); z-index: 10;}
 .pitch-slot.occupied { border: 1px solid #f59e0b; background: rgba(15, 23, 42, 0.9); color: #fff; }
-.slot-remove-btn { position: absolute; top: -6px; right: -6px; background: #ef4444; color: #fff; border: none; border-radius: 50%; width: 16px; height: 16px; font-size: 9px; cursor: pointer; display: none; }
+/* Это гарантирует, что крестик не вылетит за пределы поля */
+#squad-pitch div.occupied {
+  position: relative;
+}
+
+/* Красивый и ровный крестик */
+.slot-remove-btn {
+  position: absolute;
+  top: -5px;       /* Сдвиг наверх */
+  right: -5px;     /* Сдвиг вправо */
+  width: 22px;
+  height: 22px;
+  background-color: #ef4444; /* Красный цвет */
+  color: white;
+  border: 2px solid #1e293b; /* Обводка под цвет фона, чтобы красиво смотрелось */
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 0;
+  line-height: 1;
+  z-index: 10;
+}
+
+/* Эффект при наведении на крестик с ноутбука */
+.slot-remove-btn:hover {
+  background-color: #dc2626;
+  transform: scale(1.1);
+}
 .pitch-slot.occupied:hover .slot-remove-btn { display: block; }
 
 .squad-picker-grid { display: flex; gap: 8px; overflow-x: auto; padding: 8px 0; }
