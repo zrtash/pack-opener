@@ -389,6 +389,16 @@ function renderSBCPicker() {
 }
 
 document.getElementById('sbc-submit-btn').onclick = () => {
+  // Находим трех игроков, которых игрок положил в слоты сжигания
+  const burnedPlayers = sbcBurnList.map(id => players.find(p => p.id === id)).filter(Boolean);
+  
+  // Если вдруг в слотах меньше 3 игроков, прерываемся
+  if (burnedPlayers.length < 3) return;
+
+  // Считаем средний рейтинг сдаваемых игроков
+  const avgRating = Math.round(burnedPlayers.reduce((sum, p) => sum + p.raiting, 0) / burnedPlayers.length);
+
+  // Сжигаем карточки
   sbcBurnList.forEach(id => { inventory[id].count--; }); 
   sbcBurnList = [];
   document.getElementById('sbc-modal').style.display = 'none';
@@ -397,20 +407,29 @@ document.getElementById('sbc-submit-btn').onclick = () => {
   const rand = Math.random();
   let reward;
 
-  // Шанс 1% (0.01) на Марадону
-  if (rand < 0.01) {
+  // Маленький шанс на легенд (сохраняем твою ультра-редкую механику)
+  if (rand < 0.005) {
     reward = players.find(p => p.id === 'maradona');
-  } 
-  // Шанс 2% (от 0.01 до 0.03) на Пеле
-  else if (rand < 0.01) {
+  } else if (rand < 0.015) {
     reward = players.find(p => p.id === 'pele');
-  } 
-  // В остальных случаях — случайный элитный игрок с рейтингом 88+
-  else {
-    const topPlayers = players.filter(p => p.raiting >= 88 && p.id !== 'maradona' && p.id !== 'pele');
-    reward = topPlayers[Math.floor(Math.random() * topPlayers.length)];
+  } else {
+    // В зависимости от среднего рейтинга (avgRating) формируем пул наград:
+    let minRewardRating = avgRating + 1; // Награда гарантированно выше среднего на 1 и более
     
-    // Страховка, если вдруг список пуст
+    if (avgRating >= 90) {
+      minRewardRating = 91; // Если сдали топ, то награда будет от 91+
+    }
+
+    // Ищем всех игроков, чей рейтинг подходит под новую планку
+    let eligiblePlayers = players.filter(p => p.raiting >= minRewardRating && p.id !== 'maradona' && p.id !== 'pele');
+    
+    // Если таких не нашлось (например, уперлись в потолок), берем просто топ-игроков
+    if (eligiblePlayers.length === 0) {
+      eligiblePlayers = players.filter(p => p.raiting >= 88 && p.id !== 'maradona' && p.id !== 'pele');
+    }
+
+    reward = eligiblePlayers[Math.floor(Math.random() * eligiblePlayers.length)];
+    
     if (!reward) reward = players.find(p => p.id === 'mbappe') || players[0];
   }
 
