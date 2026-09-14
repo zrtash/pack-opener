@@ -88,6 +88,7 @@ body {
   box-sizing: border-box;
   position: relative; 
   z-index: 5; 
+  margin-top: 10px;
 }
 
 .btn-secondary { 
@@ -96,15 +97,15 @@ body {
   color: #38bdf8; 
   border: 1px solid #38bdf8;
   border-radius: 10px;
-  padding: 10px 4px; /* Уменьшили вертикальные отступы, чтобы кнопки не были «жирными» */
-  font-size: 11px;    /* Чуть уменьшили шрифт, чтобы надписи вроде «Сборки (ИПК)» точно влезали */
-  font-weight: 700;
+  padding: 8px 4px;      /* Внутренние отступы сверху/снизу */
+  font-size: 11px;       /* Удобный размер шрифта */
+  font-weight: 800;
   cursor: pointer; 
   touch-action: manipulation; 
   box-sizing: border-box;
-  white-space: nowrap; /* Запрещаем тексту переноситься и ломать высоту */
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal; 
+  text-align: center;
+  min-height: 63px;
 }
 .btn-secondary:hover { opacity: 0.8; }
 
