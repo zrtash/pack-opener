@@ -83,9 +83,9 @@ async function loadPlayersFromDB() {
       if (!players.find(p => p.id === customPlayer.id)) {
         players.push(customPlayer); // Добавляем в общий список игры
         
-        // Добавляем шанс выпадения новой карточки в паках (по умолчанию)
-        packTypes.standard.weights[customPlayer.id] = 5; // Шанс в обычном паке
-        packTypes.elite.weights[customPlayer.id] = 5;    // Шанс в элитном паке
+        // Берем шанс из базы. Если его там нет (для старых карточек), ставим 5 по умолчанию
+        packTypes.standard.weights[customPlayer.id] = customPlayer.weightStandard !== undefined ? customPlayer.weightStandard : 5; 
+        packTypes.elite.weights[customPlayer.id] = customPlayer.weightElite !== undefined ? customPlayer.weightElite : 5;   // Шанс в элитном паке
       }
     });
 
@@ -579,6 +579,8 @@ packIconEl.addEventListener('click', () => {
 
 // Отправка новой карточки в Firebase
 document.getElementById('admin-submit-btn').onclick = async () => {
+  const weightStandard = parseFloat(document.getElementById('admin-weight-standard').value) || 0;
+  const weightElite = parseFloat(document.getElementById('admin-weight-elite').value) || 0;
   const name = document.getElementById('admin-name').value;
   const raiting = parseInt(document.getElementById('admin-raiting').value);
   const club = document.getElementById('admin-club').value;
@@ -597,10 +599,10 @@ document.getElementById('admin-submit-btn').onclick = async () => {
   try {
     // Импортируем функцию добавления (если она еще не импортирована)
     const { collection, setDoc, doc } = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
-    
+
     // Сохраняем в коллекцию "players"
     await setDoc(doc(db, "players", id), {
-      id, name, raiting, club, league, pos, price, photo
+      id, name, raiting, club, league, pos, price, photo, weightStandard, weightElite
     });
     
     alert('✅ Карточка успешно отправлена в общую базу данных!');
