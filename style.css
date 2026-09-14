@@ -41,7 +41,17 @@ body { margin: 0; min-height: 100vh; background-color: #0b1120; color: #f8fafc; 
 .btn-secondary { flex: 1; background: #1e293b; color: #38bdf8; border-color: #38bdf8; padding: 9px 6px; font-size: 12px; }
 .btn-secondary:hover { opacity: 0.8; }
 .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(6px); justify-content: center; align-items: center; z-index: 100; }
-.modal-window { background: #1e293b; width: 92%; max-width: 520px; border-radius: 16px; padding: 20px; border: 1px solid #334155; }
+.modal-window { 
+  background: #1e293b; 
+  width: 92%; 
+  max-width: 520px; 
+  border-radius: 16px; 
+  padding: 20px; 
+  border: 1px solid #334155; 
+  /* НОВЫЕ ДВЕ СТРОЧКИ: */
+  max-height: 90vh; 
+  overflow-y: auto; 
+}
 .modal-wide { max-width: 650px; }
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
 .close-btn { background: none; border: none; font-size: 26px; color: #94a3b8; cursor: pointer; }
@@ -65,7 +75,17 @@ body { margin: 0; min-height: 100vh; background-color: #0b1120; color: #f8fafc; 
 .slot-locked .mini-placeholder-text { font-size: 9px; color: #64748b; font-weight: 700; }
 
 /* 11 Players Pitch (4-3-3) */
-.pitch { width: 100%; height: 350px; background: radial-gradient(circle, #15803d 0%, #14532d 100%); border: 2px solid #86efac; border-radius: 12px; position: relative; margin-bottom: 12px; overflow: hidden; }
+/* 11 Players Pitch (4-3-3) */
+.pitch { 
+  width: 100%; 
+  height: 520px; /* Было 350px, теперь места хватит всем 4 линиям */
+  background: radial-gradient(circle, #15803d 0%, #14532d 100%); 
+  border: 2px solid #86efac; 
+  border-radius: 12px; 
+  position: relative; 
+  margin-bottom: 12px; 
+  overflow: hidden; 
+}
 .pitch-circle { width: 80px; height: 80px; border: 2px solid rgba(255, 255, 255, 0.25); border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
 .pitch-line { position: absolute; width: 100%; height: 2px; background: rgba(255, 255, 255, 0.25); top: 50%; }
 .pitch-penalty-box { position: absolute; width: 140px; height: 50px; border: 2px solid rgba(255, 255, 255, 0.25); left: 50%; transform: translateX(-50%); }
@@ -234,19 +254,12 @@ body { margin: 0; min-height: 100vh; background-color: #0b1120; color: #f8fafc; 
 /* Мобильная адаптация */
 @media (max-width: 400px) {
   .pitch {
-    height: 300px; /* Делаем поле чуть ниже на узких экранах */
+    height: 480px; /* Было 300px. Теперь на телефонах поле тоже высокое! */
   }
   .pitch-slot {
     width: 48px;
     height: 58px;
     font-size: 9px;
-  }
-  .action-buttons {
-    flex-direction: column; /* Кнопки открытия и продажи встанут друг под другом */
-  }
-  .sbc-slot {
-    width: 75px;
-    height: 105px;
   }
 }
 
