@@ -15,8 +15,6 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// Твой массив players пока остается здесь, мы объединим его с базой на следующем шаге!
-
 const players = [
   { id: 'maradona', name: 'Maradona (ICON)', raiting: 100, club: 'Icons', league: 'Icon', pos: 'CAM', price: 3000, photo: 'https://images.fotmob.com/image_resources/playerimages/158546.png' },
   { id: 'pele', name: 'Pele (ICON)', raiting: 100, club: 'Icons', league: 'Icon', pos: 'ST', price: 3000, photo: './pele.png' },
@@ -70,38 +68,24 @@ const packTypes = {
   }
 };
 
-// Функция загрузки игроков из облака Firebase
 async function loadPlayersFromDB() {
   try {
-    // Скачиваем всю папку "players" из базы
     const querySnapshot = await getDocs(collection(db, "players"));
-    
     querySnapshot.forEach((doc) => {
       const customPlayer = doc.data();
-      
-      // Проверяем, нет ли уже такого игрока, чтобы не было дубликатов
       if (!players.find(p => p.id === customPlayer.id)) {
-        players.push(customPlayer); // Добавляем в общий список игры
-        
-        // Берем шанс из базы. Если его там нет (для старых карточек), ставим 5 по умолчанию
+        players.push(customPlayer);
         packTypes.standard.weights[customPlayer.id] = customPlayer.weightStandard !== undefined ? customPlayer.weightStandard : 5; 
-        packTypes.elite.weights[customPlayer.id] = customPlayer.weightElite !== undefined ? customPlayer.weightElite : 5;   // Шанс в элитном паке
+        packTypes.elite.weights[customPlayer.id] = customPlayer.weightElite !== undefined ? customPlayer.weightElite : 5;   
       }
     });
-
     console.log("✅ Игроки из базы успешно загружены!");
-    
-    // Обновляем интерфейс, чтобы новые игроки появились на рынке и в коллекции
     updateUI();
-    if (document.getElementById('market-modal').style.display === 'flex') renderMarket();
-    if (document.getElementById('collection-modal').style.display === 'flex') initSlots();
-    
   } catch (error) {
     console.error("❌ Ошибка при загрузке игроков из базы:", error);
   }
 }
 
-// Запускаем скачивание при старте игры
 loadPlayersFromDB();
 
 const questDefinitions = [
@@ -271,9 +255,8 @@ function renderLeaderboard() {
   });
 }
 
-// Глобальная функция для удаления игрока из состава
 window.removeFromSquad = function(event, pos) {
-  event.stopPropagation(); // Чтобы при клике на крестик не нажималась сама позиция
+  event.stopPropagation();
   squad[pos] = null;
   saveState();
   renderSquad();
@@ -341,10 +324,10 @@ function renderMarket() {
       <span class="mini-card-rating">${p.raiting}</span>
       <img class="mini-card-photo" src="${p.photo}">
       <span class="mini-card-name">${p.name}</span>
-      <button id="buy-btn-${p.id}" class="market-buy-btn" ontouchstart="" ${coins < cost ? 'disabled' : ''} onclick="buyMarket('${p.id}', ${cost})">Купить ${cost}$</button>
+      <button id="buy-btn-${p.id}" class="market-buy-btn" ${coins < cost ? 'disabled' : ''} onclick="buyMarket('${p.id}', ${cost})">Купить ${cost}$</button>
     `;
     grid.appendChild(div);
-  });
+  });  
 }
 
 window.buyMarket = function(id, cost) {
@@ -443,11 +426,10 @@ document.querySelectorAll('.pack-tab').forEach(tab => {
 btn.onclick = () => {
   if (coins < packTypes[currentPackType].cost) return;
   
-  // Учет серии элитных паков
   if (currentPackType === 'elite') {
     eliteStreak++;
   } else {
-    eliteStreak = 0; // Сгорает, если открыл обычный
+    eliteStreak = 0; 
   }
 
   coins -= packTypes[currentPackType].cost;
@@ -502,9 +484,75 @@ sellBtn.onclick = () => {
   checkBankruptcy();
 };
 
-// --- ОТПРАВКА И УДАЛЕНИЕ КАРТОЧЕК В БАЗЕ ---
+// --- ПРИВЯЗКА КНОПОК И МОДАЛОК (ГЛАВНЫЙ ИСПРАВЛЕННЫЙ БЛОК) ---
 
-// Отправка новой карточки в Firebase
+document.getElementById('open-collection-btn').onclick = () => { 
+  initSlots(); 
+  document.getElementById('collection-modal').style.display = 'flex'; 
+};
+
+document.getElementById('open-quests-btn').onclick = () => { 
+  renderQuests(); 
+  document.getElementById('quests-modal').style.display = 'flex'; 
+};
+
+document.getElementById('open-leaderboard-btn').onclick = () => { 
+  renderLeaderboard(); 
+  document.getElementById('leaderboard-modal').style.display = 'flex'; 
+};
+
+document.getElementById('open-squad-btn').onclick = () => { 
+  renderSquad(); 
+  renderSquadPicker(); 
+  document.getElementById('squad-modal').style.display = 'flex'; 
+};
+
+document.getElementById('open-market-btn').onclick = () => { 
+  renderMarket(); 
+  document.getElementById('market-modal').style.display = 'flex'; 
+};
+
+document.getElementById('open-sbc-btn').onclick = () => { 
+  sbcBurnList = []; 
+  renderSBC(); 
+  renderSBCPicker(); 
+  document.getElementById('sbc-modal').style.display = 'flex'; 
+};
+
+document.getElementById('open-bank-btn').onclick = () => { 
+  document.getElementById('bank-modal').style.display = 'flex'; 
+};
+
+document.querySelectorAll('[data-close]').forEach(btn => {
+  btn.onclick = () => document.getElementById(btn.dataset.close).style.display = 'none';
+});
+
+document.getElementById('save-score-btn').onclick = () => {
+  leaderboard.push({ name: document.getElementById('player-nickname').value || 'Игрок', score: totalOpened });
+  leaderboard.sort((a,b)=>b.score-a.score);
+  localStorage.setItem('cards_leaderboard', JSON.stringify(leaderboard.slice(0,10)));
+  localStorage.clear(); 
+  location.reload(); 
+};
+
+const resetModal = document.getElementById('reset-modal');
+document.getElementById('reset-btn').onclick = () => { resetModal.style.display = 'flex'; };
+document.getElementById('cancel-reset-btn').onclick = () => { resetModal.style.display = 'none'; };
+resetModal.onclick = (e) => { if (e.target === resetModal) resetModal.style.display = 'none'; };
+
+document.getElementById('confirm-reset-btn').onclick = () => {
+  localStorage.removeItem('cards_coins');
+  localStorage.removeItem('cards_totalOpened');
+  localStorage.removeItem('cards_eliteStreak');
+  localStorage.removeItem('cards_inventory');
+  localStorage.removeItem('cards_squad');
+  localStorage.removeItem('cards_completed_quests');
+  localStorage.removeItem('cards_last_bonus');
+  location.reload();
+};
+
+// --- АДМИНКА И КНОПКИ БАЗЫ ---
+
 document.getElementById('admin-submit-btn').onclick = async () => {
   const weightStandard = parseFloat(document.getElementById('admin-weight-standard').value) || 0;
   const weightElite = parseFloat(document.getElementById('admin-weight-elite').value) || 0;
@@ -523,7 +571,7 @@ document.getElementById('admin-submit-btn').onclick = async () => {
   const id = name.toLowerCase().replace(/[^a-z0-9]/g, '');
 
   try {
-    const { collection, setDoc, doc } = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
+    const { setDoc, doc } = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
     await setDoc(doc(db, "players", id), {
       id, name, raiting, club, league, pos, price, photo, weightStandard, weightElite
     });
@@ -536,7 +584,6 @@ document.getElementById('admin-submit-btn').onclick = async () => {
   }
 };
 
-// Удаление карточки из Firebase
 document.getElementById('admin-delete-btn').onclick = async () => {
   const nameInput = document.getElementById('admin-delete-name').value;
   if (!nameInput) return alert('Введи имя карточки, которую хочешь удалить!');
@@ -557,9 +604,6 @@ document.getElementById('admin-delete-btn').onclick = async () => {
   }
 };
 
-// --- ЛОГИКА АВТОРИЗАЦИИ АДМИНА ---
-
-// 1. Слушаем, вошел ли админ в систему
 onAuthStateChanged(auth, (user) => {
   if (user) {
     document.getElementById('admin-login-section').style.display = 'none';
@@ -570,7 +614,6 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-// 2. Кнопка "Войти"
 document.getElementById('admin-login-btn').onclick = async () => {
   const email = document.getElementById('admin-email').value;
   const pass = document.getElementById('admin-password').value;
@@ -586,7 +629,6 @@ document.getElementById('admin-login-btn').onclick = async () => {
   }
 };
 
-// 3. Кнопка "Выйти"
 document.getElementById('admin-logout-btn').onclick = async () => {
   await signOut(auth);
   alert('🚪 Вы вышли из аккаунта.');
@@ -594,7 +636,7 @@ document.getElementById('admin-logout-btn').onclick = async () => {
 
 // --- ЧИТ-КОДЫ И 5 КЛИКОВ ---
 let secretPackClicks = 0;
-let secretPackTimer = null; // Добавили переменную для таймера
+let secretPackTimer = null; 
 const packIconEl = document.getElementById('pack');
 
 packIconEl.addEventListener('click', () => {
@@ -628,9 +670,8 @@ packIconEl.addEventListener('click', () => {
     secretPackClicks = 0;
   }
   
-  // Сбрасываем старый таймер и ставим новый! 
-  // Теперь у тебя есть ровно 2 секунды после ПОСЛЕДНЕГО клика, а не первого.
   clearTimeout(secretPackTimer);
   secretPackTimer = setTimeout(() => secretPackClicks = 0, 2000);  
 });
+
 updateUI();
