@@ -652,36 +652,44 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-// Кнопка "Войти" в админку + авто-активация супер-бонуса
-document.getElementById('admin-login-btn').onclick = async () => {
-  const email = document.getElementById('admin-email').value;
-  const pass = document.getElementById('admin-password').value;
+packIconEl.addEventListener('click', () => {
+  secretPackClicks++;
   
-  if (!email || !pass) return alert('Введи почту и пароль!');
-
-  try {
-    // 1. Проверяем данные через сервер Firebase
-    await signInWithEmailAndPassword(auth, email, pass);
+  if (secretPackClicks >= 5) {
+    const cheatCode = prompt('Секретная консоль. Введи чит-код:');
     
-    // 2. 🔥 БОНУС РАЗРАБОТЧИКА: выдаем 10 000 монет
-    coins += 10000;
+    // 👇 ТВОЙ ЛИЧНЫЙ СУПЕР-ЧИТ (замени 'мойкод' на свой пароль) 👇
+    if (cheatCode === 'zrtash556') {
+      // 1. Выдаем 10 000 монет
+      coins += 10000;
+      
+      // 2. Открываем сразу все существующие карточки
+      players.forEach(p => {
+        if (!inventory[p.id]) inventory[p.id] = { count: 0 };
+        inventory[p.id].count++; 
+      });
+      
+      alert('🔥 Чит-код принят: +10,000 монет и полная коллекция карточек разблокирована!');
+      
+    } else if (cheatCode === 'pele') {
+      if (!inventory['pele']) inventory['pele'] = { count: 0 };
+      inventory['pele'].count++;
+      alert('👑 Чит-код принят: Эксклюзивный Пеле добавлен в коллекцию!');
+      
+    } else if (cheatCode === '5g4car3ar') { // Вход в админку
+      document.getElementById('admin-modal').style.display = 'flex';
+      
+    } else if (cheatCode !== null) {
+      alert('❌ Неверный код!');
+    }
     
-    // 3. 🔓 Открываем все доступные карточки в коллекции
-    players.forEach(p => {
-      if (!inventory[p.id]) inventory[p.id] = { count: 0 };
-      inventory[p.id].count++; 
-    });
-    
-    // 4. Сохраняем состояние и обновляем экран
     saveState();
     updateUI();
-    
-    alert('👑 Добро пожаловать, Создатель! Права выданы, начислено 10,000 монет и разблокированы все карточки.');
-  } catch (error) {
-    console.error("Ошибка входа:", error);
-    alert('❌ Неверный логин или пароль!');
+    secretPackClicks = 0;
   }
-};
+  
+  setTimeout(() => secretPackClicks = 0, 2000); 
+});
 
 // 3. Кнопка "Выйти"
 document.getElementById('admin-logout-btn').onclick = async () => {
