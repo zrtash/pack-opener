@@ -88,6 +88,7 @@ body {
   font-size: 13px; 
   transition: color 0.3s ease; 
   z-index: 2; /* Текст должен быть ПОВЕРХ ползунка */
+  white-space: nowrap;
 }
 
 /* 5. У активной кнопки меняется ТОЛЬКО цвет текста на белый */
