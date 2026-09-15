@@ -47,9 +47,38 @@ body {
 .reset-btn { background: none; border: none; color: #64748b; cursor: pointer; font-size: 16px; }
 .reset-btn:hover { color: #ef4444; }
 
-.pack-selector { display: flex; gap: 8px; background: #1e293b; padding: 4px; border-radius: 12px; }
+.pack-selector { 
+  position: relative; 
+  display: flex; 
+  background: #1e293b; 
+  padding: 4px; 
+  border-radius: 12px; 
+  z-index: 1;
+  /* Убрали gap, чтобы кнопки стояли вплотную и ползунок ездил ровно */
+}
+
+/* 2. Тот самый плавающий серый ползунок */
+.pack-selector::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc(50% - 4px); /* Занимает ровно половину места */
+  background: #334155;    /* Тот самый серый цвет активной кнопки */
+  border-radius: 8px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Плавное и естественное скольжение */
+  z-index: -1; /* Прячем прямоугольник ПОД текстом кнопок */
+}
+
+/* 3. Магия: если нажата кнопка "Элитный", ползунок уезжает вправо */
+.pack-selector:has([data-pack="elite"].active)::before {
+  transform: translateX(100%);
+}
+
 .pack-tab { 
-  background: transparent; 
+  flex: 1; /* Делаем кнопки идеально одинаковыми по ширине */
+  background: transparent !important; /* Важно: убираем жесткий фон, теперь фон дает ползунок! */
   border: none; 
   color: #94a3b8; 
   font-weight: 700; 
@@ -57,10 +86,14 @@ body {
   border-radius: 8px; 
   cursor: pointer; 
   font-size: 13px; 
-  /* 👇 ВОТ МАГИЯ ПЛАВНОСТИ 👇 */
-  transition: background-color 0.3s ease, color 0.3s ease; 
+  transition: color 0.3s ease; 
+  z-index: 2; /* Текст должен быть ПОВЕРХ ползунка */
 }
-.pack-tab.active { background: #334155; color: #f8fafc; }
+
+/* 5. У активной кнопки меняется ТОЛЬКО цвет текста на белый */
+.pack-tab.active { 
+  color: #f8fafc; 
+}
 
 .stage { height: 330px; display: flex; align-items: center; justify-content: center; }
 .pack-box { 
