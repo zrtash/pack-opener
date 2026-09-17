@@ -2,23 +2,58 @@
 <html lang="ru">
   <head>
     <!-- Yandex.Metrika counter -->
-<script type="text/javascript">
-    (function(m,e,t,r,i,k,a){
-        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-        m[i].l=1*new Date();
-        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=112541398', 'ym');
+    <script type="text/javascript">
+      (function (m, e, t, r, i, k, a) {
+        m[i] =
+          m[i] ||
+          function () {
+            (m[i].a = m[i].a || []).push(arguments);
+          };
+        m[i].l = 1 * new Date();
+        for (var j = 0; j < document.scripts.length; j++) {
+          if (document.scripts[j].src === r) {
+            return;
+          }
+        }
+        ((k = e.createElement(t)),
+          (a = e.getElementsByTagName(t)[0]),
+          (k.async = 1),
+          (k.src = r),
+          a.parentNode.insertBefore(k, a));
+      })(
+        window,
+        document,
+        "script",
+        "https://mc.yandex.ru/metrika/tag.js?id=112541398",
+        "ym",
+      );
 
-    ym(112541398, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
-</script>
-<noscript><div><img src="https://mc.yandex.ru/watch/112541398" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
+      ym(112541398, "init", {
+        ssr: true,
+        webvisor: true,
+        clickmap: true,
+        ecommerce: "dataLayer",
+        referrer: document.referrer,
+        url: location.href,
+        accurateTrackBounce: true,
+        trackLinks: true,
+      });
+    </script>
+    <noscript
+      ><div>
+        <img
+          src="https://mc.yandex.ru/watch/112541398"
+          style="position: absolute; left: -9999px"
+          alt=""
+        /></div
+    ></noscript>
+    <!-- /Yandex.Metrika counter -->
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="Icon" href="./logo.png">
+    <link rel="Icon" href="./logo.png" />
     <title>FootBallersCard</title>
-    <link rel="stylesheet" href="style.css?v=1.4.4" />
+    <link rel="stylesheet" href="style.css?v=1.6" />
   </head>
   <body>
     <canvas id="confetti-canvas"></canvas>
@@ -28,14 +63,19 @@
 
     <div class="main-container">
       <div class="top-bar">
-        <div
-          class="coins-badge"
-          id="open-bank-btn"
-          style="cursor: pointer"
-          title="Купить монеты"
-        >
+        <!-- Кнопка профиля игрока -->
+        <div class="player-profile-btn" id="open-profile-btn">
+          <img
+            src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
+            id="top-avatar"
+            alt="avatar"
+          />
+          <span id="top-nickname">Игрок</span>
+        </div>
+
+        <!-- Баланс вынесем отдельно -->
+        <div class="coins-badge" title="Баланс">
           💵 <span id="coins-count">1000</span>$
-          <span style="color: #10b981; font-size: 16px">+</span>
         </div>
         <div class="counter">
           Паков открыто: <span id="pack-count">0</span>
@@ -61,7 +101,7 @@
       </div>
 
       <div class="action-buttons">
-        <button id="btn" class="btn">Открыть (150$)</button>
+        <button id="btn" class="btn">Открыть (200$)</button>
         <button id="sell-btn" class="btn btn-sell" style="display: none">
           Продать
         </button>
@@ -79,46 +119,81 @@
           Задания 🎯
         </button>
       </div>
-      <div class="nav-buttons" style="margin-top: 8px;">
-        <button id="open-market-btn" class="btn btn-secondary" style="background:#f59e0b; color:#111827;">Рынок 🛒</button>
-        <button id="open-sbc-btn" class="btn btn-secondary" style="background:#8b5cf6; color:#fff;">Сборки (ИПК) ♻️</button>
-        <button id="open-leaderboard-btn" class="btn btn-secondary">Топ 🏆</button>
+
+      <div class="nav-buttons" style="margin-top: 8px">
+        <button
+          id="open-market-btn"
+          class="btn btn-secondary"
+          style="background: #f59e0b; color: #111827"
+        >
+          Рынок 🛒
+        </button>
+        <button
+          id="open-sbc-btn"
+          class="btn btn-secondary"
+          style="background: #8b5cf6; color: #fff"
+        >
+          Сборки (ИПК) ♻️
+        </button>
+        <button id="open-leaderboard-btn" class="btn btn-secondary">
+          Топ 🏆
+        </button>
       </div>
 
-      <!-- ВСТАВЛЯЙ КОД ТЕЛЕГРАМА ВОТ СЮДА -->
       <a href="https://t.me/fbc_openCards" target="_blank" class="tg-link-btn">
         💬 Наш Telegram (Отзывы и Обновы)
       </a>
+    </div>
+    <!-- Конец main-container -->
 
-    </div> <!-- Это конец main-container, дальше идут модалки -->
-
-    <!-- Модалки (Скрытые) -->
-    <!-- Коллекция -->
+    <!-- Модалки -->
     <div id="collection-modal" class="modal-overlay">
       <div class="modal-window modal-wide">
         <div class="modal-header">
           <h3>Коллекция</h3>
-          <button class="close-btn" data-close="collection-modal">
+          <button
+            id="close-btn"
+            class="close-btn"
+            data-close="collection-modal"
+          >
             &times;
           </button>
         </div>
         <div class="filters-bar">
-          <button class="filter-btn active" data-filter="all">Все</button
-          ><button class="filter-btn" data-filter="La Liga">La Liga</button
-          ><button class="filter-btn" data-filter="Premier League">
-            Premier League</button>
-          <button class="filter-btn" data-filter="Seria A">Seria A</button
+          <button
+            id="btn-filter-all"
+            class="filter-btn active"
+            data-filter="all"
           >
-          <button class="filter-btn" data-filter="Saudi Pro League">Saudi Pro League</button
-          >
+            Все
+          </button>
+          <button class="filter-btn" data-filter="La Liga">La Liga</button>
+          <button class="filter-btn" data-filter="Premier League">
+            Premier League
+          </button>
+          <button class="filter-btn" data-filter="Seria A">Seria A</button>
+          <button class="filter-btn" data-filter="Saudi Pro League">
+            Saudi Pro League
+          </button>
+          <button class="filter-btn" data-filter="Super Liga">
+            Super League
+          </button>
+          <button class="filter-btn" data-filter="USA">USA</button>
           <button class="filter-btn" data-filter="Icon">Иконы</button>
           <button class="filter-btn" data-filter="Тренер">Тренеры</button>
+          <button class="filter-btn" data-filter="ST">Атака (ST/LW/RW)</button>
+          <button class="filter-btn" data-filter="CM">Полузащита</button>
+          <button class="filter-btn" data-filter="CB">Защита</button>
+          <button class="filter-btn" data-filter="GK">Вратари</button>
+          <!-- Сортировки -->
+          <button class="filter-btn" data-sort="desc" style="color: #f59e0b">
+            ⭐ Топ
+          </button>
         </div>
         <div id="collection-grid" class="modal-grid"></div>
       </div>
     </div>
 
-    <!-- Задания -->
     <div id="quests-modal" class="modal-overlay">
       <div class="modal-window">
         <div class="modal-header">
@@ -132,14 +207,85 @@
     <!-- Состав (11 игроков) -->
     <div id="squad-modal" class="modal-overlay">
       <div class="modal-window modal-wide">
-        <div class="modal-header">
-          <div class="squad-header-info">
-            <h3>Состав (4-3-3)</h3>
-            <span class="squad-rating-badge"
-              >Рейтинг: <b id="squad-ovr">0</b></span
+        <div
+          class="modal-header"
+          style="flex-direction: column; align-items: stretch; gap: 10px"
+        >
+          <!-- Верхняя строка: Заголовок и кнопка закрытия -->
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            "
+          >
+            <h3 style="margin: 0">Состав (4-3-3)</h3>
+            <button
+              id="close-btn-squad"
+              class="close-btn"
+              data-close="squad-modal"
             >
+              &times;
+            </button>
           </div>
-          <button class="close-btn" data-close="squad-modal">&times;</button>
+
+          <!-- Панель управления клубом и статистикой -->
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              background: #0f172a;
+              padding: 10px 14px;
+              border-radius: 10px;
+              border: 1px solid #334155;
+            "
+          >
+            <!-- Клик по клубу открывает выбор команды -->
+            <!-- Клик по клубу открывает выбор команды -->
+            <div
+              id="open-club-picker"
+              style="
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                cursor: pointer;
+              "
+              title="Сменить любимый клуб"
+            >
+              <img
+                id="club-badge-img"
+                src="./real.png"
+                alt="club"
+                style="width: 28px; height: 28px; object-fit: contain"
+              />
+              <div>
+                <div style="font-size: 10px; color: #94a3b8">Любимый клуб</div>
+                <div
+                  id="club-name-display"
+                  style="font-size: 13px; font-weight: bold; color: #38bdf8"
+                >
+                  Real Madrid
+                </div>
+              </div>
+            </div>
+
+            <!-- Общий OVR и расширенная статистика -->
+            <div style="display: flex; gap: 15px; text-align: right">
+              <div>
+                <div style="font-size: 10px; color: #94a3b8">Рейтинг OVR</div>
+                <div style="font-size: 14px; font-weight: bold; color: #f59e0b">
+                  <span id="squad-ovr">0</span>
+                </div>
+              </div>
+              <div>
+                <div style="font-size: 10px; color: #94a3b8">Химия</div>
+                <div style="font-size: 14px; font-weight: bold; color: #10b981">
+                  100%
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="pitch">
           <div class="pitch-line center-line"></div>
@@ -175,7 +321,6 @@
       </div>
     </div>
 
-    <!-- Рынок -->
     <div id="market-modal" class="modal-overlay">
       <div class="modal-window modal-wide">
         <div class="modal-header">
@@ -186,7 +331,6 @@
       </div>
     </div>
 
-    <!-- Сборки (SBC) -->
     <div id="sbc-modal" class="modal-overlay">
       <div class="modal-window">
         <div class="modal-header">
@@ -214,21 +358,158 @@
       </div>
     </div>
 
-    <!-- Банк (Донат) -->
-    <div id="bank-modal" class="modal-overlay">
+    <!-- Окно Авторизации / Регистрации -->
+    <div
+      id="auth-modal"
+      class="modal-overlay"
+      style="display: flex; background: rgba(11, 17, 32, 0.98)"
+    >
+      <div class="modal-window" style="text-align: center; max-width: 350px">
+        <h2 style="color: #38bdf8; margin-top: 0">Вход в игру ⚽</h2>
+        <p style="font-size: 12px; color: #94a3b8; margin-bottom: 20px">
+          Соревнуйся с другими игроками онлайн!
+        </p>
+
+        <input
+          type="text"
+          id="auth-nickname"
+          placeholder="Твой никнейм"
+          class="auth-input"
+        />
+        <input
+          type="password"
+          id="auth-password"
+          placeholder="Пароль"
+          class="auth-input"
+        />
+
+        <button
+          id="auth-login-btn"
+          class="btn"
+          style="width: 100%; margin-bottom: 10px"
+        >
+          Войти / Зарегистрироваться
+        </button>
+        <p style="font-size: 10px; color: #64748b">
+          Если аккаунта нет, он будет создан автоматически.
+        </p>
+      </div>
+    </div>
+
+    <!-- Личный Кабинет (Профиль) -->
+    <div id="profile-modal" class="modal-overlay">
       <div class="modal-window">
         <div class="modal-header">
-          <h3>Банк (Купить $)</h3>
-          <button class="close-btn" data-close="bank-modal">&times;</button>
-        </div>
-        <div class="bank-options">
-          <button class="bank-btn" onclick="buyCoins(5000, '0.99$')">
-            На данный момент платеж не работает, будет раюотать после обновления)
+          <h3>Личный Кабинет</h3>
+          <button class="close-btn" id="close-btnn" data-close="profile-modal">
+            &times;
           </button>
         </div>
-        <p style="font-size: 10px; color: #64748b; margin-top: 10px">
-          В данный момент оплата тестируется.
-        </p>
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+          "
+        >
+          <img
+            src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
+            id="profile-avatar-preview"
+            style="
+              width: 100px;
+              height: 100px;
+              border-radius: 50%;
+              border: 3px solid #f59e0b;
+              background: #334155;
+            "
+          />
+          <h2 id="profile-nickname-display" style="margin: 0; color: #fff">
+            Игрок
+          </h2>
+
+          <!-- Внутри твоего modal-window, между ником и статистикой -->
+          <div style="width: 100%; text-align: left; margin-bottom: 15px">
+            <p style="margin: 0 0 8px 0; color: #94a3b8; font-size: 14px">
+              Выбрать аватар:
+            </p>
+
+            <!-- Сетка стандартных аватарок -->
+            <div
+              class="avatar-presets"
+              id="avatar-presets"
+              style="
+                display: flex;
+                gap: 10px;
+                margin-bottom: 10px;
+                flex-wrap: wrap;
+              "
+            >
+              <!-- JS добавит картинки сюда -->
+            </div>
+
+            <!-- Ввод своей ссылки -->
+            <div style="display: flex; gap: 8px">
+              <input
+                type="text"
+                id="custom-avatar-input"
+                placeholder="Ссылка на картинку..."
+                style="
+                  flex: 1;
+                  padding: 8px;
+                  border-radius: 6px;
+                  border: 1px solid #334155;
+                  background: #0f172a;
+                  color: white;
+                "
+              />
+              <button
+                onclick="saveCustomAvatar()"
+                style="
+                  background: #f59e0b;
+                  color: white;
+                  border: none;
+                  border-radius: 6px;
+                  padding: 0 15px;
+                  cursor: pointer;
+                "
+              >
+                ОК
+              </button>
+            </div>
+          </div>
+
+          <div
+            style="
+              background: #0f172a;
+              width: 100%;
+              padding: 15px;
+              border-radius: 12px;
+              border: 1px solid #334155;
+              text-align: left;
+            "
+          >
+            <p style="margin: 5px 0">
+              🏆 Кубки: <b id="profile-cups" style="color: #f59e0b">0</b>
+            </p>
+            <p style="margin: 5px 0">
+              📦 Открыто паков:
+              <b id="profile-total-packs" style="color: #38bdf8">0</b>
+            </p>
+            <p style="margin: 5px 0">
+              💰 Заработано монет:
+              <b id="profile-total-coins" style="color: #10b981">0</b>
+            </p>
+          </div>
+
+          <button
+            id="logout-btn"
+            class="btn btn-secondary"
+            style="width: 100%; color: #ef4444; border-color: #ef4444"
+          >
+            Выйти из аккаунта
+          </button>
+        </div>
       </div>
     </div>
 
@@ -238,9 +519,6 @@
         <h2 style="color: #ef4444; margin-top: 0">⚠️ ВНИМАНИЕ!</h2>
         <p style="font-size: 14px; margin-bottom: 15px">
           Ты точно хочешь обнулить баланс, состав и удалить всю коллекцию?
-        </p>
-        <p style="font-size: 12px; color: #94a3b8; margin-bottom: 20px">
-          Твои рекорды в таблице лидеров сохранятся.
         </p>
         <div style="display: flex; gap: 10px; justify-content: center">
           <button
@@ -265,7 +543,6 @@
         </div>
       </div>
     </div>
-    
 
     <!-- Банкрот и Топ -->
     <div id="gameover-modal" class="modal-overlay">
@@ -275,79 +552,363 @@
           Паков открыто:
           <b id="final-pack-score" style="color: #f59e0b; font-size: 20px">0</b>
         </p>
-        <input
-          type="text"
-          id="player-nickname"
-          placeholder="Твой ник"
-          maxlength="12"
-          style="
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #334155;
-            background: #0f172a;
-            color: #fff;
-            width: 80%;
-            margin-bottom: 12px;
-            text-align: center;
-          "
-        /><br /><button id="save-score-btn" class="btn">
-          Сохранить и начать заново
-        </button>
+        <button id="save-score-btn" class="btn">Начать заново</button>
       </div>
     </div>
+
     <div id="leaderboard-modal" class="modal-overlay">
       <div class="modal-window">
         <div class="modal-header">
-          <h3>🏆 Топ игроков</h3>
+          <h3>🏆 Топ</h3>
           <button class="close-btn" data-close="leaderboard-modal">
             &times;
           </button>
         </div>
-        <div id="leaderboard-list" class="leaderboard-list"></div>
+
+        <!-- Переключатель вкладок в стиле твоего меню паков -->
+        <div class="pack-selector" style="margin-bottom: 15px">
+          <button
+            class="pack-tab active"
+            id="tab-packs"
+            style="white-space: nowrap"
+          >
+            По пакам
+          </button>
+          <button class="pack-tab" id="tab-cups" style="white-space: nowrap">
+            По кубкам
+          </button>
+        </div>
+
+        <div id="leaderboard-list" class="leaderboard-list">
+          <!-- Сюда скрипт загрузит игроков -->
+        </div>
       </div>
     </div>
 
-<!-- Секретная Админ-панель -->
-<div id="admin-modal" class="modal" style="display: none; background: rgba(0,0,0,0.9); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; justify-content: center; align-items: center;">
-  <div style="background: #1e293b; padding: 20px; border-radius: 10px; width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 10px; max-height: 90vh; overflow-y: auto;">
-    
-    <!-- БЛОК ВХОДА (ЛОГИН) -->
-    <div id="admin-login-section" style="display: flex; flex-direction: column; gap: 10px;">
-      <h2 style="color: white; margin-bottom: 10px; text-align: center;">Вход в систему</h2>
-      <input type="email" id="admin-email" placeholder="Email от Firebase" style="padding: 10px; border-radius: 5px;">
-      <input type="password" id="admin-password" placeholder="Пароль" style="padding: 10px; border-radius: 5px;">
-      <button id="admin-login-btn" style="padding: 10px; background: #38bdf8; color: black; font-weight: bold; border: none; border-radius: 5px;">Войти</button>
+    <!-- Секретная Админ-панель -->
+    <div
+      id="admin-modal"
+      class="modal"
+      style="
+        display: none;
+        background: rgba(0, 0, 0, 0.9);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+      "
+    >
+      <div
+        style="
+          background: #1e293b;
+          padding: 20px;
+          border-radius: 10px;
+          width: 90%;
+          max-width: 400px;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          max-height: 90vh;
+          overflow-y: auto;
+        "
+      >
+        <!-- БЛОК ВХОДА (ЛОГИН) -->
+        <div
+          id="admin-login-section"
+          style="display: flex; flex-direction: column; gap: 10px"
+        >
+          <h2 style="color: white; margin-bottom: 10px; text-align: center">
+            Вход в систему
+          </h2>
+          <input
+            type="email"
+            id="admin-email"
+            placeholder="Email от Firebase"
+            style="padding: 10px; border-radius: 5px"
+          />
+          <input
+            type="password"
+            id="admin-password"
+            placeholder="Пароль"
+            style="padding: 10px; border-radius: 5px"
+          />
+          <button
+            id="admin-login-btn"
+            style="
+              padding: 10px;
+              background: #38bdf8;
+              color: black;
+              font-weight: bold;
+              border: none;
+              border-radius: 5px;
+            "
+          >
+            Войти
+          </button>
+        </div>
+
+        <!-- БЛОК УПРАВЛЕНИЯ КАРТОЧКАМИ (Скрыт до входа) -->
+        <div
+          id="admin-dashboard-section"
+          style="display: none; flex-direction: column; gap: 10px"
+        >
+          <h2 style="color: white; margin-bottom: 10px; text-align: center">
+            Создать Карточку
+          </h2>
+          <input
+            type="text"
+            id="admin-name"
+            placeholder="Имя"
+            style="padding: 10px; border-radius: 5px"
+          />
+          <input
+            type="number"
+            id="admin-raiting"
+            placeholder="Рейтинг"
+            style="padding: 10px; border-radius: 5px"
+          />
+          <input
+            type="text"
+            id="admin-club"
+            placeholder="Клуб"
+            style="padding: 10px; border-radius: 5px"
+          />
+          <input
+            type="text"
+            id="admin-league"
+            placeholder="Лига"
+            style="padding: 10px; border-radius: 5px"
+          />
+          <input
+            type="text"
+            id="admin-pos"
+            placeholder="Позиция"
+            style="padding: 10px; border-radius: 5px"
+          />
+          <input
+            type="number"
+            id="admin-price"
+            placeholder="Цена продажи"
+            style="padding: 10px; border-radius: 5px"
+          />
+          <input
+            type="text"
+            id="admin-photo"
+            placeholder="Ссылка на фото"
+            style="padding: 10px; border-radius: 5px"
+          />
+          <input
+            type="number"
+            step="0.1"
+            id="admin-weight-standard"
+            placeholder="Шанс (обычный)"
+            style="padding: 10px; border-radius: 5px; border: 1px solid #eab308"
+          />
+          <input
+            type="number"
+            step="0.1"
+            id="admin-weight-elite"
+            placeholder="Шанс (элитный)"
+            style="padding: 10px; border-radius: 5px; border: 1px solid #a855f7"
+          />
+          <button
+            id="admin-submit-btn"
+            style="
+              padding: 10px;
+              background: #34d399;
+              color: black;
+              font-weight: bold;
+              border: none;
+              border-radius: 5px;
+              margin-top: 10px;
+            "
+          >
+            Отправить в базу
+          </button>
+
+          <hr style="border: 1px solid #334155; margin: 15px 0; width: 100%" />
+          <h3 style="color: #ef4444; margin-bottom: 5px; text-align: center">
+            Удалить карточку
+          </h3>
+          <input
+            type="text"
+            id="admin-delete-name"
+            placeholder="Введи Имя"
+            style="padding: 10px; border-radius: 5px"
+          />
+          <button
+            id="admin-delete-btn"
+            style="
+              padding: 10px;
+              background: #ef4444;
+              color: white;
+              font-weight: bold;
+              border: none;
+              border-radius: 5px;
+            "
+          >
+            Удалить навсегда
+          </button>
+
+          <button
+            id="admin-logout-btn"
+            style="
+              padding: 10px;
+              background: transparent;
+              color: #94a3b8;
+              border: 1px solid #94a3b8;
+              border-radius: 5px;
+              margin-top: 10px;
+            "
+          >
+            Выйти из аккаунта
+          </button>
+        </div>
+
+        <!-- Общая кнопка закрытия -->
+        <button
+          onclick="
+            document.getElementById('admin-modal').style.display = 'none'
+          "
+          style="
+            padding: 10px;
+            background: #64748b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 5px;
+          "
+        >
+          Закрыть панель
+        </button>
+      </div>
     </div>
 
-    <!-- БЛОК УПРАВЛЕНИЯ КАРТОЧКАМИ (Скрыт до входа) -->
-    <div id="admin-dashboard-section" style="display: none; flex-direction: column; gap: 10px;">
-      <h2 style="color: white; margin-bottom: 10px; text-align: center;">Создать Карточку</h2>
-      <input type="text" id="admin-name" placeholder="Имя (например, L. Messi)" style="padding: 10px; border-radius: 5px;">
-      <input type="number" id="admin-raiting" placeholder="Рейтинг (например, 94)" style="padding: 10px; border-radius: 5px;">
-      <input type="text" id="admin-club" placeholder="Клуб (например, Inter Miami)" style="padding: 10px; border-radius: 5px;">
-      <input type="text" id="admin-league" placeholder="Лига (например, MLS)" style="padding: 10px; border-radius: 5px;">
-      <input type="text" id="admin-pos" placeholder="Позиция (например, RW)" style="padding: 10px; border-radius: 5px;">
-      <input type="number" id="admin-price" placeholder="Цена продажи (например, 500)" style="padding: 10px; border-radius: 5px;">
-      <input type="text" id="admin-photo" placeholder="Ссылка на фото (URL)" style="padding: 10px; border-radius: 5px;">
-      <input type="number" step="0.1" id="admin-weight-standard" placeholder="Шанс в обычном паке (например, 5 или 0.5)" style="padding: 10px; border-radius: 5px; border: 1px solid #eab308;">
-      <input type="number" step="0.1" id="admin-weight-elite" placeholder="Шанс в элитном паке (например, 10 или 2.5)" style="padding: 10px; border-radius: 5px; border: 1px solid #a855f7;">
-      
-      <button id="admin-submit-btn" style="padding: 10px; background: #34d399; color: black; font-weight: bold; border: none; border-radius: 5px; margin-top: 10px;">Отправить в базу</button>
-      
-      <hr style="border: 1px solid #334155; margin: 15px 0; width: 100%;">
-      <h3 style="color: #ef4444; margin-bottom: 5px; text-align: center;">Удалить карточку</h3>
-      <input type="text" id="admin-delete-name" placeholder="Введи Имя (как при создании)" style="padding: 10px; border-radius: 5px;">
-      <button id="admin-delete-btn" style="padding: 10px; background: #ef4444; color: white; font-weight: bold; border: none; border-radius: 5px;">Удалить навсегда</button>
-      
-      <button id="admin-logout-btn" style="padding: 10px; background: transparent; color: #94a3b8; border: 1px solid #94a3b8; border-radius: 5px; margin-top: 10px;">Выйти из аккаунта</button>
+    <!-- Окно выбора любимого клуба (ставим в самый низ к остальным модалкам) -->
+    <div id="club-modal" class="modal-overlay">
+      <div class="modal-window" style="max-width: 320px">
+        <div class="modal-header">
+          <h3>Выбери клуб</h3>
+          <button class="close-btn" data-close="club-modal">&times;</button>
+        </div>
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+          "
+        >
+          <button
+            class="btn btn-secondary club-option-btn"
+            data-club="Real Madrid"
+            data-img="https://images.fotmob.com/image_resources/logo/teamlogo/8633_large.png"
+          >
+            <img
+              src="https://images.fotmob.com/image_resources/logo/teamlogo/8633_large.png"
+              alt=""
+            />
+            Real Madrid
+          </button>
+          <button
+            class="btn btn-secondary club-option-btn"
+            data-club="Barcelona"
+            data-img="https://images.fotmob.com/image_resources/logo/teamlogo/8634_large.png"
+          >
+            <img
+              src="https://images.fotmob.com/image_resources/logo/teamlogo/8634_large.png"
+              alt=""
+            />
+            Barcelona
+          </button>
+          <button
+            class="btn btn-secondary club-option-btn"
+            data-club="Manchester City"
+            data-img="https://images.fotmob.com/image_resources/logo/teamlogo/8456_large.png"
+          >
+            <img
+              src="https://images.fotmob.com/image_resources/logo/teamlogo/8456_large.png"
+              alt=""
+            />
+            Manchester City
+          </button>
+          <button
+            class="btn btn-secondary club-option-btn"
+            data-club="PSG"
+            data-img="https://images.fotmob.com/image_resources/logo/teamlogo/9847_large.png"
+          >
+            <img
+              src="https://images.fotmob.com/image_resources/logo/teamlogo/9847_large.png"
+              alt=""
+            />
+            PSG
+          </button>
+          <button
+            class="btn btn-secondary club-option-btn"
+            data-club="Bayern Munich"
+            data-img="https://images.fotmob.com/image_resources/logo/teamlogo/9823_large.png"
+          >
+            <img
+              src="https://images.fotmob.com/image_resources/logo/teamlogo/9823_large.png"
+              alt=""
+            />
+            Bayern Munich
+          </button>
+        </div>
+      </div>
     </div>
 
-    <!-- Общая кнопка закрытия -->
-    <button onclick="document.getElementById('admin-modal').style.display='none'" style="padding: 10px; background: #64748b; color: white; border: none; border-radius: 5px; margin-top: 5px;">Закрыть панель</button>
-  </div>
-</div>
-    
+    <!-- Плавающая кнопка -->
+    <button class="support-float-btn" onclick="toggleSupportWindow()">
+      💬 Поддержка
+    </button>
 
-    <script type="module" src="script.js?v=1.4.4"></script>
+    <!-- Окно чата -->
+    <div id="support-float-window" class="support-float-window">
+      <div class="support-float-header">
+        Сообщение разработчику
+        <button
+          onclick="toggleSupportWindow()"
+          style="
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+          "
+        >
+          ✕
+        </button>
+      </div>
+      <div class="support-float-body">
+        <textarea
+          id="support-text"
+          rows="4"
+          placeholder="Опишите баг или идею..."
+        ></textarea>
+        <button
+          onclick="sendSupportMessage()"
+          style="
+            width: 100%;
+            margin-top: 10px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px;
+            cursor: pointer;
+            font-weight: bold;
+          "
+        >
+          Отправить
+        </button>
+      </div>
+    </div>
+
+    <script type="module" src="script.js?v=1.6"></script>
   </body>
 </html>
