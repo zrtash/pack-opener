@@ -25,6 +25,45 @@ let userClub = { name: "Real Madrid", img: "./real.png" };
 let currentUserUid = null;
 let currentSort = null;
 
+// === ИНТЕГРАЦИЯ С TELEGRAM MINI APP ===
+const tg = window.Telegram.WebApp;
+
+// Разворачиваем игру на весь экран, если открыли в Telegram
+if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+  tg.expand();
+}
+
+// Функция автоматического входа
+async function autoTelegramLogin() {
+  if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+    const user = tg.initDataUnsafe.user;
+    
+    // Берем юзернейм ТГ, а если его нет — используем уникальный ID
+    const nickname = user.username ? user.username.toLowerCase() : `tg_${user.id}`;
+    const email = `${nickname}@fbcards.game`;
+    
+    // Генерируем надежный скрытый пароль на основе ID пользователя
+    const pass = `FBC_${user.id}_secret`;
+
+    try {
+      // Пытаемся тихо войти в аккаунт
+      await signInWithEmailAndPassword(auth, email, pass);
+      showToast(`С возвращением, ${user.first_name}!`);
+    } catch (error) {
+      // Если аккаунта еще нет — автоматически регистрируем
+      try {
+        await createUserWithEmailAndPassword(auth, email, pass);
+        showToast(`Добро пожаловать в игру, ${user.first_name}!`);
+      } catch (regError) {
+        console.error("Ошибка авторегистрации ТГ:", regError);
+      }
+    }
+  }
+}
+
+// Запускаем невидимую авторизацию при загрузке скрипта
+autoTelegramLogin();
+
 const players = [
   // --- ИКОНЫ (ДЖЕКПОТ) ---
   {
