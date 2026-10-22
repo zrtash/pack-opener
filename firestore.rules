@@ -1,0 +1,178 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return signedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return signedIn() && request.auth.token.admin == true;
+    }
+
+    function validSquadPlayer(playerId) {
+      return playerId == null
+        || (playerId is string && playerId.size() > 0 && playerId.size() <= 100);
+    }
+
+    function validSquad(squad) {
+      return squad is map
+        && squad.size() == 11
+        && squad.keys().hasOnly(['LW', 'ST', 'RW', 'LCM', 'CM', 'RCM', 'LB', 'LCB', 'RCB', 'RB', 'GK'])
+        && validSquadPlayer(squad.get('LW', null))
+        && validSquadPlayer(squad.get('ST', null))
+        && validSquadPlayer(squad.get('RW', null))
+        && validSquadPlayer(squad.get('LCM', null))
+        && validSquadPlayer(squad.get('CM', null))
+        && validSquadPlayer(squad.get('RCM', null))
+        && validSquadPlayer(squad.get('LB', null))
+        && validSquadPlayer(squad.get('LCB', null))
+        && validSquadPlayer(squad.get('RCB', null))
+        && validSquadPlayer(squad.get('RB', null))
+        && validSquadPlayer(squad.get('GK', null));
+    }
+
+    function validGameState(data) {
+      return data.keys().hasOnly([
+          'coins', 'totalOpened', 'bestTotalOpened', 'eliteStreak', 'cups',
+          'inventory', 'squad', 'completedQuests', 'claimedCollectionRewards',
+          'userClub', 'avatarUrl', 'lastBonusTime', 'dailyChallengeClaimedDate',
+          'nickname', 'lastUpdated', 'lastActionId'
+        ])
+        && data.coins is int && data.coins >= 0 && data.coins <= 1000000000000
+        && data.totalOpened is int && data.totalOpened >= 0 && data.totalOpened <= 1000000000000
+        && data.bestTotalOpened is int && data.bestTotalOpened >= data.totalOpened && data.bestTotalOpened <= 1000000000000
+        && data.eliteStreak is int && data.eliteStreak >= 0 && data.eliteStreak <= 1000000000000
+        && data.cups is int && data.cups >= 0 && data.cups <= 1000000000000
+        && data.inventory is map && data.inventory.size() <= 500
+        && validSquad(data.squad)
+        && data.completedQuests is list && data.completedQuests.size() <= 100
+        && data.completedQuests.toSet().size() == data.completedQuests.size()
+        && data.completedQuests.toSet().hasOnly([
+          'open_3', 'open_10', 'elite_5', 'collect_10', 'collect_madrid', 'stars_90', 'rich_club'
+        ])
+        && data.claimedCollectionRewards is list && data.claimedCollectionRewards.size() <= 100
+        && data.claimedCollectionRewards.toSet().size() == data.claimedCollectionRewards.size()
+        && data.claimedCollectionRewards.toSet().hasOnly([
+          'collection-15', 'collection-30', 'collection-45', 'collection-full'
+        ])
+        && data.userClub is map
+        && data.userClub.keys().hasOnly(['name', 'img'])
+        && data.userClub.name is string && data.userClub.name.size() > 0 && data.userClub.name.size() <= 60
+        && data.userClub.img is string && data.userClub.img.size() <= 2048 && data.userClub.img.matches('^https://.*$')
+        && data.avatarUrl is string && data.avatarUrl.size() <= 2048
+        && (data.avatarUrl == '' || data.avatarUrl.matches('^https://.*$'))
+        && data.lastBonusTime is int && data.lastBonusTime >= 0 && data.lastBonusTime <= 9007199254740991
+        && data.dailyChallengeClaimedDate is string && data.dailyChallengeClaimedDate.size() <= 10
+        && (data.dailyChallengeClaimedDate == '' || data.dailyChallengeClaimedDate.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$'))
+        && data.nickname is string && data.nickname.size() <= 40
+        && data.lastUpdated is int && data.lastUpdated >= 0 && data.lastUpdated <= 9007199254740991
+        && data.lastActionId is string && data.lastActionId.size() <= 100;
+    }
+
+    function validPlayerData(data, playerId) {
+      return data.keys().hasAll([
+          'id', 'name', 'raiting', 'club', 'league', 'pos', 'price', 'photo',
+          'weightStandard', 'weightElite', 'updatedAt'
+        ])
+        && data.keys().hasOnly([
+          'id', 'name', 'raiting', 'club', 'league', 'pos', 'price', 'photo',
+          'weightStandard', 'weightElite', 'updatedAt'
+        ])
+        && data.id == playerId
+        && data.id is string && data.id.size() > 0 && data.id.size() <= 100
+        && data.name is string && data.name.size() > 0 && data.name.size() <= 60
+        && data.raiting is int && data.raiting >= 1 && data.raiting <= 99
+        && data.club is string && data.club.size() > 0 && data.club.size() <= 60
+        && data.league is string && data.league.size() > 0 && data.league.size() <= 60
+        && data.pos is string && data.pos.size() > 0 && data.pos.size() <= 12
+        && data.price is int && data.price >= 0 && data.price <= 1000000000
+        && data.photo is string && data.photo.size() <= 2048
+        && data.photo.matches('^https://.*$')
+        && data.weightStandard is number && data.weightStandard >= 0 && data.weightStandard <= 100000
+        && data.weightElite is number && data.weightElite >= 0 && data.weightElite <= 100000
+        && data.updatedAt is int && data.updatedAt >= 0 && data.updatedAt <= 9007199254740991;
+    }
+
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow create, update: if isOwner(userId) && validGameState(request.resource.data);
+      allow delete: if false;
+    }
+
+    match /leaderboard/{userId} {
+      allow read: if signedIn();
+      allow create, update: if isOwner(userId)
+        && request.resource.data.keys().hasOnly(['nickname', 'totalOpened', 'cups', 'lastUpdated'])
+        && request.resource.data.nickname is string
+        && request.resource.data.nickname.size() <= 40
+        && request.resource.data.totalOpened is int
+        && request.resource.data.totalOpened >= 0
+        && request.resource.data.totalOpened <= 1000000000000
+        && request.resource.data.cups is int
+        && request.resource.data.cups >= 0
+        && request.resource.data.cups <= 1000000000000
+        && request.resource.data.lastUpdated is int
+        && request.resource.data.lastUpdated >= 0
+        && request.resource.data.lastUpdated <= 9007199254740991
+        && getAfter(/databases/$(database)/documents/users/$(userId)).data.bestTotalOpened == request.resource.data.totalOpened
+        && getAfter(/databases/$(database)/documents/users/$(userId)).data.cups == request.resource.data.cups
+        && getAfter(/databases/$(database)/documents/users/$(userId)).data.nickname == request.resource.data.nickname;
+      allow delete: if false;
+    }
+
+    match /players/{playerId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && validPlayerData(request.resource.data, playerId);
+      allow delete: if isAdmin();
+    }
+
+    match /supportMessages/{messageId} {
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(['uid', 'nickname', 'message', 'status', 'createdAt'])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.nickname is string
+        && request.resource.data.nickname.size() <= 40
+        && request.resource.data.message is string
+        && request.resource.data.message.size() > 0
+        && request.resource.data.message.size() <= 1200
+        && request.resource.data.status == 'new'
+        && request.resource.data.createdAt == request.time
+        && getAfter(/databases/$(database)/documents/supportRateLimits/$(request.auth.uid)).data.lastSentAt == request.time
+        && getAfter(/databases/$(database)/documents/supportRateLimits/$(request.auth.uid)).data.lastMessageId == messageId;
+      allow read: if isAdmin();
+      allow update, delete: if false;
+    }
+
+    match /supportRateLimits/{userId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId)
+        && request.resource.data.keys().hasOnly(['lastSentAt', 'lastMessageId'])
+        && request.resource.data.lastSentAt == request.time
+        && request.resource.data.lastMessageId is string
+        && request.resource.data.lastMessageId.size() > 0
+        && request.resource.data.lastMessageId.size() <= 128;
+      allow update: if isOwner(userId)
+        && request.resource.data.keys().hasOnly(['lastSentAt', 'lastMessageId'])
+        && request.resource.data.lastSentAt == request.time
+        && request.resource.data.lastMessageId is string
+        && request.resource.data.lastMessageId.size() > 0
+        && request.resource.data.lastMessageId.size() <= 128
+        && (!resource.data.keys().hasAny(['lastSentAt'])
+          || request.time >= resource.data.lastSentAt + duration.value(60, 's'));
+      allow delete: if false;
+    }
+
+    match /gameActionRateLimits/{userId} {
+      allow read, write: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
