@@ -1,60 +1,12 @@
 <!doctype html>
 <html lang="ru">
   <head>
-    <!-- Yandex.Metrika counter -->
-    <script type="text/javascript">
-      (function (m, e, t, r, i, k, a) {
-        m[i] =
-          m[i] ||
-          function () {
-            (m[i].a = m[i].a || []).push(arguments);
-          };
-        m[i].l = 1 * new Date();
-        for (var j = 0; j < document.scripts.length; j++) {
-          if (document.scripts[j].src === r) {
-            return;
-          }
-        }
-        ((k = e.createElement(t)),
-          (a = e.getElementsByTagName(t)[0]),
-          (k.async = 1),
-          (k.src = r),
-          a.parentNode.insertBefore(k, a));
-      })(
-        window,
-        document,
-        "script",
-        "https://mc.yandex.ru/metrika/tag.js?id=112541398",
-        "ym",
-      );
-
-      ym(112541398, "init", {
-        ssr: true,
-        webvisor: true,
-        clickmap: true,
-        ecommerce: "dataLayer",
-        referrer: document.referrer,
-        url: location.href,
-        accurateTrackBounce: true,
-        trackLinks: true,
-      });
-    </script>
-    <noscript
-      ><div>
-        <img
-          src="https://mc.yandex.ru/watch/112541398"
-          style="position: absolute; left: -9999px"
-          alt=""
-        /></div
-    ></noscript>
-    <!-- /Yandex.Metrika counter -->
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="Icon" href="./logo.png" />
+    <link rel="icon" type="image/png" sizes="128x128" href="./favicon.png?v=1.9.2" />
     <title>FootPacks</title>
-    <link rel="stylesheet" href="style.css?v=1.6.1" />
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="style.css?v=1.9.2" />
+    <script defer src="https://telegram.org/js/telegram-web-app.js"></script>
   </head>
   <body>
     <canvas id="confetti-canvas"></canvas>
@@ -62,24 +14,29 @@
       <div class="walkout-text">🔥 WALKOUT 🔥</div>
     </div>
 
-    <div class="main-container">
+    <main class="main-container">
       <div class="top-bar">
         <!-- Кнопка профиля игрока -->
-        <div class="player-profile-btn" id="open-profile-btn">
+        <button
+          class="player-profile-btn"
+          id="open-profile-btn"
+          type="button"
+          aria-label="Открыть профиль"
+        >
           <img
             src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
             id="top-avatar"
-            alt="avatar"
+            alt="Аватар пользователя"
           />
           <span id="top-nickname">Игрок</span>
-        </div>
+        </button>
 
         <!-- Баланс вынесем отдельно -->
         <div class="coins-badge" title="Баланс">
-          💵 <span id="coins-count">1000</span>$
+          💵 <span id="coins-count" aria-live="polite" aria-atomic="true">1000</span>$
         </div>
         <div class="counter">
-          Паков открыто: <span id="pack-count">0</span>
+          Паков открыто: <span id="pack-count" aria-live="polite" aria-atomic="true">0</span>
           <button id="reset-btn" class="reset-btn" title="Сбросить всё">
             ↺
           </button>
@@ -87,18 +44,24 @@
       </div>
 
       <div class="pack-selector">
-        <button class="pack-tab active" data-pack="standard">
+        <button class="pack-tab active" data-pack="standard" aria-pressed="true">
           Обычный (200$)
         </button>
-        <button class="pack-tab" data-pack="elite">Элитный (450$)</button>
+        <button class="pack-tab" data-pack="elite" aria-pressed="false">Элитный (450$)</button>
       </div>
 
       <div class="stage">
-        <div id="pack" class="pack-box">
+        <div
+          id="pack"
+          class="pack-box"
+          role="button"
+          tabindex="0"
+          aria-label="Открыть выбранный пак"
+        >
           <div id="pack-icon" class="pack-icon">📦</div>
           <div id="pack-name" class="pack-label">Обычный пак</div>
         </div>
-        <div id="card" class="card"></div>
+        <div id="card" class="card" role="status" aria-live="polite" aria-atomic="true"></div>
       </div>
 
       <div class="action-buttons">
@@ -141,10 +104,10 @@
         </button>
       </div>
 
-      <a href="https://t.me/fbc_openCards" target="_blank" class="tg-link-btn">
+      <a href="https://t.me/fbc_openCards" target="_blank" rel="noopener noreferrer" class="tg-link-btn">
         💬 Наш Telegram (Отзывы и Обновы)
       </a>
-    </div>
+    </main>
     <!-- Конец main-container -->
 
     <!-- Модалки -->
@@ -160,6 +123,15 @@
             &times;
           </button>
         </div>
+        <label class="collection-search" for="collection-search-input">
+          <span aria-hidden="true">⌕</span>
+          <input
+            id="collection-search-input"
+            type="search"
+            autocomplete="off"
+            placeholder="Найти игрока, тренера, клуб или лигу"
+          />
+        </label>
         <div class="filters-bar">
           <button
             id="btn-filter-all"
@@ -172,7 +144,12 @@
           <button class="filter-btn" data-filter="Premier League">
             Premier League
           </button>
-          <button class="filter-btn" data-filter="Seria A">Seria A</button>
+          <button class="filter-btn" data-filter="Seria A">Serie A</button>
+          <button class="filter-btn" data-filter="Bundesliga">
+            Bundesliga
+          </button>
+          <button class="filter-btn" data-filter="Ligue 1">Ligue 1</button>
+          <button class="filter-btn" data-filter="MLS">MLS</button>
           <button class="filter-btn" data-filter="Saudi Pro League">
             Saudi Pro League
           </button>
@@ -182,7 +159,7 @@
           <button class="filter-btn" data-filter="USA">USA</button>
           <button class="filter-btn" data-filter="Icon">Иконы</button>
           <button class="filter-btn" data-filter="Тренер">Тренеры</button>
-          <button class="filter-btn" data-filter="ST">Атака (ST/LW/RW)</button>
+          <button class="filter-btn" data-filter="ST">Атака</button>
           <button class="filter-btn" data-filter="CM">Полузащита</button>
           <button class="filter-btn" data-filter="CB">Защита</button>
           <button class="filter-btn" data-filter="GK">Вратари</button>
@@ -191,6 +168,12 @@
             ⭐ Топ
           </button>
         </div>
+        <section
+          id="collection-rewards"
+          class="collection-rewards"
+          aria-label="Награды за коллекцию футболистов"
+          aria-live="polite"
+        ></section>
         <div id="collection-grid" class="modal-grid"></div>
       </div>
     </div>
@@ -201,6 +184,11 @@
           <h3>Задания и награды</h3>
           <button class="close-btn" data-close="quests-modal">&times;</button>
         </div>
+        <section
+          id="daily-challenge-card"
+          class="daily-challenge-card"
+          aria-live="polite"
+        ></section>
         <div id="quests-list" class="quests-list"></div>
       </div>
     </div>
@@ -246,6 +234,9 @@
             <!-- Клик по клубу открывает выбор команды -->
             <div
               id="open-club-picker"
+              role="button"
+              tabindex="0"
+              aria-label="Выбрать любимый клуб"
               style="
                 display: flex;
                 align-items: center;
@@ -256,7 +247,7 @@
             >
               <img
                 id="club-badge-img"
-                src="./real.png"
+                src="https://images.fotmob.com/image_resources/logo/teamlogo/8633_large.png"
                 alt="club"
                 style="width: 28px; height: 28px; object-fit: contain"
               />
@@ -339,8 +330,8 @@
           <button class="close-btn" data-close="sbc-modal">&times;</button>
         </div>
         <p style="font-size: 12px; color: #94a3b8">
-          Сдай 3 любых игроков, чтобы получить эксклюзивный Пак Иконы (Шанс на
-          Пеле 99!)
+          Сдай 3 игроков и получи карточку из наградного пула. Средний рейтинг
+          сдачи влияет на силу возможной награды.
         </p>
         <div id="sbc-slots" class="sbc-slots-container"></div>
         <button
@@ -363,6 +354,7 @@
     <div
       id="auth-modal"
       class="modal-overlay"
+      data-modal-persistent="true"
       style="display: flex; background: rgba(11, 17, 32, 0.98)"
     >
       <div class="modal-window" style="text-align: center; max-width: 350px">
@@ -376,12 +368,16 @@
           id="auth-nickname"
           placeholder="Твой никнейм"
           class="auth-input"
+          aria-label="Твой никнейм"
+          autocomplete="username"
         />
         <input
           type="password"
           id="auth-password"
           placeholder="Пароль"
           class="auth-input"
+          aria-label="Пароль"
+          autocomplete="current-password"
         />
 
         <button
@@ -417,6 +413,7 @@
           <img
             src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
             id="profile-avatar-preview"
+            alt="Предварительный просмотр аватара"
             style="
               width: 100px;
               height: 100px;
@@ -504,6 +501,15 @@
           </div>
 
           <button
+            id="admin-access-btn"
+            class="btn btn-secondary"
+            type="button"
+            style="width: 100%; display: none"
+          >
+            Вход администратора
+          </button>
+
+          <button
             id="logout-btn"
             class="btn btn-secondary"
             style="width: 100%; color: #ef4444; border-color: #ef4444"
@@ -571,11 +577,12 @@
           <button
             class="pack-tab active"
             id="tab-packs"
+            aria-pressed="true"
             style="white-space: nowrap"
           >
             По пакам
           </button>
-          <button class="pack-tab" id="tab-cups" style="white-space: nowrap">
+          <button class="pack-tab" id="tab-cups" aria-pressed="false" style="white-space: nowrap">
             По кубкам
           </button>
         </div>
@@ -587,71 +594,8 @@
     </div>
 
     <!-- Секретная Админ-панель -->
-    <div
-      id="admin-modal"
-      class="modal"
-      style="
-        display: none;
-        background: rgba(0, 0, 0, 0.9);
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 9999;
-        justify-content: center;
-        align-items: center;
-      "
-    >
-      <div
-        style="
-          background: #1e293b;
-          padding: 20px;
-          border-radius: 10px;
-          width: 90%;
-          max-width: 400px;
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-          max-height: 90vh;
-          overflow-y: auto;
-        "
-      >
-        <!-- БЛОК ВХОДА (ЛОГИН) -->
-        <div
-          id="admin-login-section"
-          style="display: flex; flex-direction: column; gap: 10px"
-        >
-          <h2 style="color: white; margin-bottom: 10px; text-align: center">
-            Вход в систему
-          </h2>
-          <input
-            type="email"
-            id="admin-email"
-            placeholder="Email от Firebase"
-            style="padding: 10px; border-radius: 5px"
-          />
-          <input
-            type="password"
-            id="admin-password"
-            placeholder="Пароль"
-            style="padding: 10px; border-radius: 5px"
-          />
-          <button
-            id="admin-login-btn"
-            style="
-              padding: 10px;
-              background: #38bdf8;
-              color: black;
-              font-weight: bold;
-              border: none;
-              border-radius: 5px;
-            "
-          >
-            Войти
-          </button>
-        </div>
-
+    <div id="admin-modal" class="admin-modal-overlay">
+      <div class="admin-modal-window">
         <!-- БЛОК УПРАВЛЕНИЯ КАРТОЧКАМИ (Скрыт до входа) -->
         <div
           id="admin-dashboard-section"
@@ -664,46 +608,59 @@
             type="text"
             id="admin-name"
             placeholder="Имя"
+            maxlength="60"
             style="padding: 10px; border-radius: 5px"
           />
           <input
             type="number"
             id="admin-raiting"
             placeholder="Рейтинг"
+            min="1"
+            max="99"
+            step="1"
             style="padding: 10px; border-radius: 5px"
           />
           <input
             type="text"
             id="admin-club"
             placeholder="Клуб"
+            maxlength="60"
             style="padding: 10px; border-radius: 5px"
           />
           <input
             type="text"
             id="admin-league"
             placeholder="Лига"
+            maxlength="60"
             style="padding: 10px; border-radius: 5px"
           />
           <input
             type="text"
             id="admin-pos"
             placeholder="Позиция"
+            maxlength="12"
             style="padding: 10px; border-radius: 5px"
           />
           <input
             type="number"
             id="admin-price"
             placeholder="Цена продажи"
+            min="0"
+            max="1000000000"
+            step="1"
             style="padding: 10px; border-radius: 5px"
           />
           <input
             type="text"
             id="admin-photo"
             placeholder="Ссылка на фото"
+            maxlength="2048"
             style="padding: 10px; border-radius: 5px"
           />
           <input
             type="number"
+            min="0"
+            max="100000"
             step="0.1"
             id="admin-weight-standard"
             placeholder="Шанс (обычный)"
@@ -711,6 +668,8 @@
           />
           <input
             type="number"
+            min="0"
+            max="100000"
             step="0.1"
             id="admin-weight-elite"
             placeholder="Шанс (элитный)"
@@ -755,6 +714,37 @@
             Удалить навсегда
           </button>
 
+          <section class="admin-tools" aria-labelledby="admin-tools-title">
+            <h3 id="admin-tools-title">Инструменты администратора</h3>
+            <p class="admin-tools-description">
+              Изменения применяются только к аккаунту, в который ты вошёл.
+            </p>
+            <label for="admin-coins-amount">Начислить монеты</label>
+            <div class="admin-tool-row">
+              <input
+                id="admin-coins-amount"
+                type="number"
+                min="1"
+                max="1000000"
+                step="100"
+                value="10000"
+                inputmode="numeric"
+              />
+              <button id="admin-add-coins-btn" type="button">
+                Начислить
+              </button>
+            </div>
+            <button id="admin-collect-all-btn" type="button">
+              Получить всех футболистов
+            </button>
+            <small>
+              Добавит недостающих игроков по одной карточке. Имеющиеся дубликаты сохранятся.
+            </small>
+            <small class="admin-security-note">
+              Пока игровой сервер не подключён, владелец аккаунта может подделать собственный баланс в браузере. Чужие профили и общую базу карточек правила закрывают.
+            </small>
+          </section>
+
           <button
             id="admin-logout-btn"
             style="
@@ -772,9 +762,8 @@
 
         <!-- Общая кнопка закрытия -->
         <button
-          onclick="
-            document.getElementById('admin-modal').style.display = 'none'
-          "
+          type="button"
+          data-close="admin-modal"
           style="
             padding: 10px;
             background: #64748b;
@@ -864,15 +853,41 @@
     </div>
 
     <!-- Плавающая кнопка -->
-    <button class="support-float-btn" onclick="toggleSupportWindow()">
+    <button
+      class="sound-toggle-btn"
+      id="sound-toggle-btn"
+      type="button"
+      aria-label="Отключить звуки"
+      aria-pressed="true"
+      title="Звук включён"
+    >
+      <span aria-hidden="true">🔊</span>
+    </button>
+    <button
+      class="support-float-btn"
+      type="button"
+      aria-controls="support-float-window"
+      aria-expanded="false"
+      onclick="toggleSupportWindow()"
+    >
       💬 Поддержка
     </button>
 
     <!-- Окно чата -->
-    <div id="support-float-window" class="support-float-window">
+    <div
+      id="support-float-window"
+      class="support-float-window"
+      role="dialog"
+      aria-labelledby="support-window-title"
+      aria-describedby="support-window-description"
+      aria-hidden="true"
+    >
       <div class="support-float-header">
-        Сообщение разработчику
+        <span id="support-window-title">Сообщение разработчику</span>
         <button
+          type="button"
+          aria-label="Закрыть окно поддержки"
+          aria-controls="support-float-window"
           onclick="toggleSupportWindow()"
           style="
             background: none;
@@ -886,12 +901,29 @@
         </button>
       </div>
       <div class="support-float-body">
+        <p id="support-window-description">
+          Не отправляй пароли или личные данные. Повторное сообщение доступно
+          раз в минуту.
+        </p>
+        <label class="sr-only" for="support-text">Опишите баг или идею</label>
+        <input
+          id="support-website"
+          name="website"
+          class="support-honeypot"
+          type="text"
+          tabindex="-1"
+          autocomplete="off"
+          aria-hidden="true"
+        />
         <textarea
           id="support-text"
           rows="4"
           placeholder="Опишите баг или идею..."
+          maxlength="1200"
         ></textarea>
         <button
+          id="support-send-btn"
+          type="button"
           onclick="sendSupportMessage()"
           style="
             width: 100%;
@@ -910,6 +942,6 @@
       </div>
     </div>
 
-    <script type="module" src="script.js?v=1.6.1"></script>
+    <script type="module" src="script.js?v=1.9.2"></script>
   </body>
 </html>
