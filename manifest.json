@@ -1,0 +1,27 @@
+{
+  "background_color": "#142846",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "footpacks",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "FTP",
+  "start_url": "/",
+  "theme_color": "#c45f16",
+  "icons": [
+    {
+      "src": "https://footpacks.online/favicon.png?v=1.9.2",
+      "type": "image/png",
+      "sizes": "128x128",
+      "isSquare": true,
+      "isPng": true,
+      "isWebp": false,
+      "isJpg": false,
+      "width": 128,
+      "is512x512": false,
+      "is256x256": false,
+      "is192x192": false
+    }
+  ],
+  "id": "ftp"
+}
